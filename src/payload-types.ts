@@ -73,6 +73,7 @@ export interface Config {
     categories: Category;
     events: Event;
     'exco-members': ExcoMember;
+    'exco-contact-messages': ExcoContactMessage;
     memos: Memo;
     users: User;
     redirects: Redirect;
@@ -98,6 +99,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     'exco-members': ExcoMembersSelect<false> | ExcoMembersSelect<true>;
+    'exco-contact-messages': ExcoContactMessagesSelect<false> | ExcoContactMessagesSelect<true>;
     memos: MemosSelect<false> | MemosSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -828,6 +830,21 @@ export interface ExcoMember {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exco-contact-messages".
+ */
+export interface ExcoContactMessage {
+  id: number;
+  member: number | ExcoMember;
+  senderName: string;
+  senderEmail: string;
+  subject: string;
+  message: string;
+  isRead?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "memos".
  */
 export interface Memo {
@@ -1061,6 +1078,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'exco-members';
         value: number | ExcoMember;
+      } | null)
+    | ({
+        relationTo: 'exco-contact-messages';
+        value: number | ExcoContactMessage;
       } | null)
     | ({
         relationTo: 'memos';
@@ -1446,6 +1467,20 @@ export interface ExcoMembersSelect<T extends boolean = true> {
   sortOrder?: T;
   isSpotlight?: T;
   isCurrent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exco-contact-messages_select".
+ */
+export interface ExcoContactMessagesSelect<T extends boolean = true> {
+  member?: T;
+  senderName?: T;
+  senderEmail?: T;
+  subject?: T;
+  message?: T;
+  isRead?: T;
   updatedAt?: T;
   createdAt?: T;
 }

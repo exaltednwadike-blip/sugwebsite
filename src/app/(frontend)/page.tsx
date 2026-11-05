@@ -69,6 +69,7 @@ export default async function HomePage() {
     eventType: event.eventType ?? 'general',
   }))
   const executiveItems: HomepageExecutive[] = executiveResult.docs.map((executive) => ({
+    id: executive.id,
     fullName: executive.fullName,
     position: executive.position,
     photoUrl: typeof executive.photo === 'object' ? (executive.photo?.url ?? null) : null,

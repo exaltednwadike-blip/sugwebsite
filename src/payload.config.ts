@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url'
 import { Categories } from './collections/Categories'
 import { Events } from './collections/Events'
 import { ExcoMembers } from './collections/ExcoMembers'
+import { ExcoContactMessages } from './collections/ExcoContactMessages'
 import { Media } from './collections/Media'
 import { Memos } from './collections/Memos'
 import { Pages } from './collections/Pages'
@@ -68,7 +69,17 @@ export default buildConfig({
     },
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
-  collections: [Pages, Posts, Media, Categories, Events, ExcoMembers, Memos, Users],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Events,
+    ExcoMembers,
+    ExcoContactMessages,
+    Memos,
+    Users,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, SiteSettings],
   plugins: [

@@ -7,6 +7,7 @@ export interface HomepageEvent {
 }
 
 export interface HomepageExecutive {
+  id?: number
   fullName: string
   position: string
   photoUrl: string | null

@@ -101,8 +101,8 @@ export function RoundTwoSections({
         )}
         {executives.length > 0 ? (
           <div className="sug-executives-grid">
-            {executives.map(({ fullName, photoUrl, position }) => (
-              <article className="sug-executive-card" key={`${fullName}-${position}`}>
+            {executives.map(({ fullName, id, photoUrl, position }) => (
+              <article className="sug-executive-card" key={id ?? `${fullName}-${position}`}>
                 {photoUrl ? (
                   <Image
                     alt={`${fullName}, ${position}`}
@@ -119,7 +119,7 @@ export function RoundTwoSections({
                 )}
                 <h3>{fullName}</h3>
                 <p>{position}</p>
-                <Link className="sug-contact-button" href="/executives">
+                <Link className="sug-contact-button" href={id ? `/executives/${id}` : '/executives'}>
                   Contact
                   <ArrowRight aria-hidden="true" size={16} />
                 </Link>
