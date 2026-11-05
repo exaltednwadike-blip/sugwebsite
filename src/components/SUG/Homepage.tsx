@@ -9,7 +9,16 @@ import {
 } from 'lucide-react'
 
 import { heroContent, utilityCards } from '@/data/homepage'
+import type { HomepageEvent, HomepageExecutive } from '@/data/homepageRoundTwo'
 import { LatestNews } from './LatestNews'
+import { RoundTwoSections } from './RoundTwoSections'
+
+interface HomepageProps {
+  events: HomepageEvent[]
+  executives: HomepageExecutive[]
+  eventsArePlaceholder: boolean
+  executivesArePlaceholder: boolean
+}
 
 const utilityIcons = {
   message: MessageCircleWarning,
@@ -18,7 +27,12 @@ const utilityIcons = {
   calendar: CalendarDays,
 } as const
 
-export function Homepage() {
+export function Homepage({
+  events,
+  executives,
+  eventsArePlaceholder,
+  executivesArePlaceholder,
+}: HomepageProps) {
   return (
     <main className="sug-home">
       <div className="sug-home-container">
@@ -77,6 +91,12 @@ export function Homepage() {
         </section>
 
         <LatestNews />
+        <RoundTwoSections
+          events={events}
+          executives={executives}
+          eventsArePlaceholder={eventsArePlaceholder}
+          executivesArePlaceholder={executivesArePlaceholder}
+        />
       </div>
     </main>
   )
