@@ -15,6 +15,7 @@ const collections: CollectionSlug[] = [
   'events',
   'exco-members',
   'media',
+  'memos',
   'pages',
   'posts',
   'forms',

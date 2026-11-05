@@ -1,5 +1,19 @@
 export type NewsCategory = 'Academic' | 'Welfare' | 'Sports' | 'Union Press'
 
+export interface HomepageNewsItem {
+  category: string
+  categorySlug: string | null
+  date: string
+  headline: string
+  author: string
+  slug: string | null
+}
+
+export interface HomepageNewsFilter {
+  label: string
+  slug: string
+}
+
 export const breakingHeadlines = [
   'SUG town hall holds this week — watch this space for details.',
   'Student welfare desk is open for enquiries and support.',

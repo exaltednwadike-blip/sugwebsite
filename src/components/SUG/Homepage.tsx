@@ -8,7 +8,7 @@ import {
   Search,
 } from 'lucide-react'
 
-import { heroContent, utilityCards } from '@/data/homepage'
+import { heroContent, utilityCards, type HomepageNewsFilter, type HomepageNewsItem } from '@/data/homepage'
 import type { HomepageEvent, HomepageExecutive } from '@/data/homepageRoundTwo'
 import { LatestNews } from './LatestNews'
 import { RoundTwoSections } from './RoundTwoSections'
@@ -18,6 +18,8 @@ interface HomepageProps {
   executives: HomepageExecutive[]
   eventsArePlaceholder: boolean
   executivesArePlaceholder: boolean
+  newsItems: HomepageNewsItem[]
+  newsCategories: HomepageNewsFilter[]
 }
 
 const utilityIcons = {
@@ -32,6 +34,8 @@ export function Homepage({
   executives,
   eventsArePlaceholder,
   executivesArePlaceholder,
+  newsItems,
+  newsCategories,
 }: HomepageProps) {
   return (
     <main className="sug-home">
@@ -90,7 +94,7 @@ export function Homepage({
           })}
         </section>
 
-        <LatestNews />
+        <LatestNews items={newsItems} categories={newsCategories} />
         <RoundTwoSections
           events={events}
           executives={executives}

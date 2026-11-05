@@ -1,4 +1,8 @@
-import type { CollectionConfig } from 'payload'
+import {
+  APIError,
+  type CollectionBeforeOperationHook,
+  type CollectionConfig,
+} from 'payload'
 
 import {
   FixedToolbarFeature,
@@ -13,6 +17,20 @@ import { isEditorOrAbove } from '../access/roles'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+const maxUploadSize = 10 * 1024 * 1024
+
+const enforceUploadSize: CollectionBeforeOperationHook<'media'> = ({ operation, req }) => {
+  if (operation !== 'create' && operation !== 'update') {
+    return
+  }
+
+  const files = [req.file, ...Object.values(req.files ?? {}).flat()]
+
+  if (files.some((file) => file && file.size > maxUploadSize)) {
+    throw new APIError('Media uploads must be 10 MB or smaller.', 413)
+  }
+}
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -39,9 +57,13 @@ export const Media: CollectionConfig = {
       }),
     },
   ],
+  hooks: {
+    beforeOperation: [enforceUploadSize],
+  },
   upload: {
     // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
     staticDir: path.resolve(dirname, '../../public/media'),
+    mimeTypes: ['image/*', 'application/pdf'],
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [

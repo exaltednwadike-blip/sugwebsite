@@ -73,6 +73,7 @@ export interface Config {
     categories: Category;
     events: Event;
     'exco-members': ExcoMember;
+    memos: Memo;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -97,6 +98,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     'exco-members': ExcoMembersSelect<false> | ExcoMembersSelect<true>;
+    memos: MemosSelect<false> | MemosSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -826,6 +828,28 @@ export interface ExcoMember {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "memos".
+ */
+export interface Memo {
+  id: number;
+  refNumber: string;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  summary?: string | null;
+  pdf: number | Media;
+  issuedBy?: string | null;
+  issuedDate: string;
+  category?: (number | null) | Category;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1037,6 +1061,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'exco-members';
         value: number | ExcoMember;
+      } | null)
+    | ({
+        relationTo: 'memos';
+        value: number | Memo;
       } | null)
     | ({
         relationTo: 'users';
@@ -1420,6 +1448,24 @@ export interface ExcoMembersSelect<T extends boolean = true> {
   isCurrent?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "memos_select".
+ */
+export interface MemosSelect<T extends boolean = true> {
+  refNumber?: T;
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  summary?: T;
+  pdf?: T;
+  issuedBy?: T;
+  issuedDate?: T;
+  category?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

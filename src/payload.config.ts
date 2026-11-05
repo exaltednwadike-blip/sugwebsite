@@ -9,6 +9,7 @@ import { Categories } from './collections/Categories'
 import { Events } from './collections/Events'
 import { ExcoMembers } from './collections/ExcoMembers'
 import { Media } from './collections/Media'
+import { Memos } from './collections/Memos'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
@@ -67,7 +68,7 @@ export default buildConfig({
     },
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
-  collections: [Pages, Posts, Media, Categories, Events, ExcoMembers, Users],
+  collections: [Pages, Posts, Media, Categories, Events, ExcoMembers, Memos, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, SiteSettings],
   plugins: [
