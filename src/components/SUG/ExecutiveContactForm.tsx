@@ -5,7 +5,7 @@ import { useActionState } from 'react'
 import {
   submitExecutiveMessage,
   type ContactFormState,
-} from '@/app/(frontend)/executives/actions'
+} from '@/app/(frontend)/officials/actions'
 
 const initialState: ContactFormState = {
   status: 'idle',

@@ -867,12 +867,38 @@ export interface Event {
 export interface ExcoMember {
   id: number;
   fullName: string;
-  position: string;
+  /**
+   * Pick the office. Executives are listed first, then the House. The title is filled in for you.
+   */
+  office?:
+    | (
+        | 'president'
+        | 'vice_president'
+        | 'general_secretary'
+        | 'financial_secretary'
+        | 'treasurer'
+        | 'director_games'
+        | 'director_welfare'
+        | 'pro'
+        | 'assistant_secretary_general'
+        | 'speaker'
+        | 'deputy_speaker'
+        | 'clerk'
+        | 'house_member'
+      )
+    | null;
+  /**
+   * Only needed for House Members, or if no office is chosen above.
+   */
+  position?: string | null;
   portfolio?: string | null;
   photo?: (number | null) | Media;
   officeHours?: string | null;
   publicEmail?: string | null;
   publicPhone?: string | null;
+  /**
+   * Used to order House Members. Lower numbers come first.
+   */
   sortOrder?: number | null;
   isSpotlight?: boolean | null;
   isCurrent?: boolean | null;
@@ -1626,6 +1652,7 @@ export interface EventsSelect<T extends boolean = true> {
  */
 export interface ExcoMembersSelect<T extends boolean = true> {
   fullName?: T;
+  office?: T;
   position?: T;
   portfolio?: T;
   photo?: T;

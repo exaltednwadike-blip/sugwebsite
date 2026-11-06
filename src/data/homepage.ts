@@ -27,7 +27,7 @@ export const siteNavigation = [
   { label: 'News', href: '/news' },
   { label: 'Memos', href: '/memos' },
   { label: 'Events', href: '/events' },
-  { label: 'Executives', href: '/executives' },
+  { label: 'Officials', href: '/officials' },
   { label: 'Resources', href: '/resources' },
   { label: 'Contact', href: '/contact' },
 ] as const

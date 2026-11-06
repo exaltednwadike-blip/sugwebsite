@@ -41,7 +41,7 @@ export async function Footer() {
           <Link href="/news">News</Link>
           <Link href="/memos">Memos</Link>
           <Link href="/events">Events</Link>
-          <Link href="/executives">Executives</Link>
+          <Link href="/officials">Officials</Link>
           <Link href="/resources">Resources</Link>
         </nav>
         <div className="rs-footer-col">

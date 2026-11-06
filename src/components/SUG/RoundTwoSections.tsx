@@ -84,7 +84,7 @@ export function RoundTwoSections({
       <section aria-labelledby="rs-exec-title" className="rs-section">
         <div className="rs-section-head">
           <h2 id="rs-exec-title">Meet your executives</h2>
-          <Link className="rs-see-all" href="/executives">
+          <Link className="rs-see-all" href="/officials">
             View all <ArrowRight aria-hidden="true" size={16} />
           </Link>
         </div>
@@ -111,7 +111,7 @@ export function RoundTwoSections({
                 )}
                 <h3>{fullName}</h3>
                 <p>{position}</p>
-                <Link className="rs-btn rs-btn-outline" href={id ? `/executives/${id}` : '/executives'}>
+                <Link className="rs-btn rs-btn-outline" href={id ? `/officials/${id}` : '/officials'}>
                   View Profile
                   <ArrowRight aria-hidden="true" size={16} />
                 </Link>

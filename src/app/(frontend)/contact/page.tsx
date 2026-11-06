@@ -54,7 +54,7 @@ export default async function ContactPage() {
             <p>Secretariat contact details have not been added yet.</p>
           )}
           <p>
-            Need to reach a specific executive? <Link href="/executives">Meet your executives</Link> and send
+            Need to reach a specific executive? <Link href="/officials">Meet your officials</Link> and send
             them a message from their profile.
           </p>
         </section>

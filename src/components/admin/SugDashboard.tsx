@@ -78,7 +78,7 @@ function linksFor(role: string, pendingItems: number, newTickets: number): LinkI
     link('memos', 'Memos'),
     link('events', 'Events'),
     link('resources', 'Resources'),
-    link('exco-members', 'Executives'),
+    link('exco-members', 'Officials'),
     link('emergency-contacts', 'Emergency contacts'),
     link('exco-contact-messages', 'Contact messages'),
     link('media', 'Media library'),
