@@ -71,6 +71,8 @@ export interface Config {
     posts: Post;
     media: Media;
     categories: Category;
+    resources: Resource;
+    'emergency-contacts': EmergencyContact;
     events: Event;
     'exco-members': ExcoMember;
     'exco-contact-messages': ExcoContactMessage;
@@ -97,6 +99,8 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    resources: ResourcesSelect<false> | ResourcesSelect<true>;
+    'emergency-contacts': EmergencyContactsSelect<false> | EmergencyContactsSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     'exco-members': ExcoMembersSelect<false> | ExcoMembersSelect<true>;
     'exco-contact-messages': ExcoContactMessagesSelect<false> | ExcoContactMessagesSelect<true>;
@@ -789,6 +793,43 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resources".
+ */
+export interface Resource {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  category: 'constitution' | 'minutes' | 'forms' | 'guidelines' | 'other';
+  description?: string | null;
+  file: number | Media;
+  publishedDate: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-contacts".
+ */
+export interface EmergencyContact {
+  id: number;
+  name: string;
+  category: 'security' | 'medical' | 'welfare' | 'student-affairs' | 'other';
+  phone: string;
+  altPhone?: string | null;
+  description?: string | null;
+  availability?: string | null;
+  sortOrder?: number | null;
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "events".
  */
 export interface Event {
@@ -1070,6 +1111,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'categories';
         value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'resources';
+        value: number | Resource;
+      } | null)
+    | ({
+        relationTo: 'emergency-contacts';
+        value: number | EmergencyContact;
       } | null)
     | ({
         relationTo: 'events';
@@ -1431,6 +1480,38 @@ export interface CategoriesSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resources_select".
+ */
+export interface ResourcesSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  category?: T;
+  description?: T;
+  file?: T;
+  publishedDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-contacts_select".
+ */
+export interface EmergencyContactsSelect<T extends boolean = true> {
+  name?: T;
+  category?: T;
+  phone?: T;
+  altPhone?: T;
+  description?: T;
+  availability?: T;
+  sortOrder?: T;
+  isActive?: T;
   updatedAt?: T;
   createdAt?: T;
 }

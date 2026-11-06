@@ -2,156 +2,203 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRef } from 'react'
-import { Menu, Phone, Search, X } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { useRef, useState } from 'react'
+import { ChevronRight, Menu, Phone, Search, X } from 'lucide-react'
 
 import { breakingHeadlines, siteNavigation } from '@/data/homepage'
-import { emergencyContacts } from '@/data/emergencyContacts'
+import type { EmergencyContactSummary } from '@/data/emergencyContacts'
 
-function NavigationLinks({ onNavigate }: { onNavigate?: () => void }) {
-  return (
-    <>
-      {siteNavigation.map(({ href, label }) => (
-        <Link className="sug-nav-link" href={href} key={label} onClick={onNavigate}>
-          {label}
-        </Link>
-      ))}
-    </>
-  )
-}
-
-export function SiteHeader() {
+export function SiteHeader({ contacts }: { contacts: EmergencyContactSummary[] }) {
+  const pathname = usePathname()
   const emergencyDialog = useRef<HTMLDialogElement>(null)
-  const mobileDialog = useRef<HTMLDialogElement>(null)
+  const menuDialog = useRef<HTMLDialogElement>(null)
+  const [searchOpen, setSearchOpen] = useState(false)
+
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
+
+  const openEmergency = () => {
+    menuDialog.current?.close()
+    emergencyDialog.current?.showModal()
+  }
 
   return (
     <>
-      <div aria-label="Breaking news" className="sug-breaking">
-        <div className="sug-breaking-inner">
-          <span className="sug-breaking-label">Breaking</span>
-          <div className="sug-breaking-motion">
-            <div className="sug-breaking-track">
-              {breakingHeadlines.map((headline) => (
-                <span className="sug-breaking-item" key={headline}>
-                  {headline}
-                </span>
-              ))}
-              <span aria-hidden="true" className="sug-breaking-duplicate">
-                {breakingHeadlines.map((headline) => (
-                  <span className="sug-breaking-item" key={headline}>
-                    {headline}
-                  </span>
-                ))}
-              </span>
-            </div>
-          </div>
-          <ul className="sug-breaking-static">
-            {breakingHeadlines.map((headline) => (
-              <li key={headline}>{headline}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <header className="sug-header">
-        <div className="sug-header-inner">
-          <Link aria-label="Student Union Government home" className="sug-brand" href="/">
-            <Image
-              alt=""
-              className="sug-logo"
-              height={48}
-              priority
-              src="/logo.png"
-              width={48}
-            />
-            <span className="sug-brand-copy">
-              <span className="sug-brand-title">Student Union Government</span>
-              <span className="sug-brand-subtitle">University of Nigeria, Enugu Campus</span>
+      <header className="rs-header">
+        <div className="rs-wrap rs-header-inner">
+          <Link aria-label="Student Union Government home" className="rs-brand" href="/">
+            <Image alt="" className="rs-logo" height={44} priority src="/logo.png" width={44} />
+            <span className="rs-brand-copy">
+              <span className="rs-brand-title">Student Union Government</span>
+              <span className="rs-brand-sub">UNN Enugu Campus</span>
             </span>
           </Link>
 
-          <nav aria-label="Main navigation" className="sug-desktop-nav">
-            <NavigationLinks />
+          <nav aria-label="Main navigation" className="rs-nav rs-desktop-only">
+            {siteNavigation.map(({ href, label }) => (
+              <Link
+                aria-current={isActive(href) ? 'page' : undefined}
+                className={isActive(href) ? 'rs-nav-link is-active' : 'rs-nav-link'}
+                href={href}
+                key={label}
+              >
+                {label}
+              </Link>
+            ))}
           </nav>
 
-          <label className="sug-search">
-            <Search aria-hidden="true" size={18} />
-            <span className="sr-only">Search the website</span>
-            <input aria-label="Search the website" placeholder="Search..." type="search" />
-          </label>
-
           <button
-            className="sug-emergency-button"
-            onClick={() => emergencyDialog.current?.showModal()}
+            aria-expanded={searchOpen}
+            aria-label="Search the website"
+            className="rs-icon-btn"
+            onClick={() => setSearchOpen((open) => !open)}
             type="button"
           >
-            <Phone aria-hidden="true" size={17} />
-            Emergency
+            <Search aria-hidden="true" size={21} />
           </button>
-
           <button
-            aria-label="Open navigation menu"
+            aria-label="Emergency contacts"
+            className="rs-icon-btn rs-icon-btn-red"
+            onClick={openEmergency}
+            type="button"
+          >
+            <Phone aria-hidden="true" size={19} />
+          </button>
+          <Link className="rs-btn rs-btn-green rs-desktop-only" href="/welfare">
+            Welfare
+          </Link>
+          <button
             aria-haspopup="dialog"
-            className="sug-menu-button"
-            onClick={() => mobileDialog.current?.showModal()}
+            aria-label="Open navigation menu"
+            className="rs-icon-btn rs-mobile-only"
+            onClick={() => menuDialog.current?.showModal()}
             type="button"
           >
             <Menu aria-hidden="true" size={24} />
           </button>
         </div>
+
+        {searchOpen && (
+          <div className="rs-wrap rs-search-panel">
+            <form className="rs-search" onSubmit={(event) => event.preventDefault()} role="search">
+              <Search aria-hidden="true" size={18} />
+              <input aria-label="Search the website" autoFocus placeholder="Search..." type="search" />
+            </form>
+          </div>
+        )}
       </header>
 
-      <dialog
-        aria-labelledby="emergency-dialog-title"
-        className="sug-dialog sug-emergency-dialog"
-        ref={emergencyDialog}
-      >
-        <div className="sug-dialog-heading">
+      <div aria-label="Breaking news" className="rs-ticker" role="region">
+        <div className="rs-wrap rs-ticker-inner">
+          <span className="rs-ticker-label">Breaking:</span>
+          <div className="rs-ticker-window">
+            <div className="rs-ticker-track">
+              <div className="rs-ticker-group">
+                {breakingHeadlines.map((headline) => (
+                  <span className="rs-ticker-item" key={headline}>
+                    {headline}
+                  </span>
+                ))}
+              </div>
+              <div aria-hidden="true" className="rs-ticker-group">
+                {breakingHeadlines.map((headline) => (
+                  <span className="rs-ticker-item" key={headline}>
+                    {headline}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+          <ul className="rs-ticker-static">
+            {breakingHeadlines.map((headline) => (
+              <li key={headline}>{headline}</li>
+            ))}
+          </ul>
+          <Link aria-label="All news" className="rs-ticker-more" href="/news">
+            <ChevronRight aria-hidden="true" size={20} />
+          </Link>
+        </div>
+      </div>
+
+      <dialog aria-labelledby="rs-emergency-title" className="rs-dialog" ref={emergencyDialog}>
+        <div className="rs-dialog-head">
           <div>
-            <p className="sug-dialog-kicker">Need help now?</p>
-            <h2 id="emergency-dialog-title">Emergency contacts</h2>
+            <p className="rs-dialog-kicker">Need help now?</p>
+            <h2 id="rs-emergency-title">Emergency contacts</h2>
           </div>
           <button
             aria-label="Close emergency contacts"
-            className="sug-icon-button"
+            className="rs-icon-btn"
             onClick={() => emergencyDialog.current?.close()}
             type="button"
           >
             <X aria-hidden="true" size={20} />
           </button>
         </div>
-        <ul className="sug-contact-list">
-          {emergencyContacts.map(({ description, href, name, phone }) => (
-            <li className="sug-contact-card" key={name}>
-              <div>
-                <h3>{name}</h3>
-                <p>{description}</p>
-              </div>
-              <a className="sug-contact-phone" href={href}>
-                <Phone aria-hidden="true" size={16} />
-                <span>{phone}</span>
-              </a>
-            </li>
-          ))}
+        <ul className="rs-contact-list">
+          {contacts.map(
+            ({ altPhone, altPhoneHref, availability, description, id, name, phone, phoneHref }) => (
+              <li className="rs-contact-card" key={id}>
+                <div>
+                  <h3>{name}</h3>
+                  {description && <p>{description}</p>}
+                  {availability && <p>{availability}</p>}
+                </div>
+                <div className="rs-contact-numbers">
+                  <a className="rs-contact-phone" href={phoneHref}>
+                    <Phone aria-hidden="true" size={16} />
+                    <span>{phone}</span>
+                  </a>
+                  {altPhone && altPhoneHref && (
+                    <a className="rs-contact-phone" href={altPhoneHref}>
+                      <Phone aria-hidden="true" size={16} />
+                      <span>{altPhone} (alternate)</span>
+                    </a>
+                  )}
+                </div>
+              </li>
+            ),
+          )}
         </ul>
-        <p className="sug-placeholder-note">Placeholder contact numbers — please verify before publishing.</p>
+        {contacts.some(({ isPlaceholder }) => isPlaceholder) && (
+          <p className="rs-dialog-note">Placeholder contact numbers - please verify before publishing.</p>
+        )}
+        <Link className="rs-dialog-link" href="/contact">
+          All contact information
+        </Link>
       </dialog>
 
-      <dialog aria-label="Mobile navigation" className="sug-dialog sug-mobile-sheet" ref={mobileDialog}>
-        <div className="sug-sheet-heading">
-          <span>Explore SUG</span>
+      <dialog aria-label="Mobile navigation" className="rs-dialog rs-sheet" ref={menuDialog}>
+        <div className="rs-dialog-head">
+          <p className="rs-dialog-kicker rs-kicker-green">Explore SUG</p>
           <button
             aria-label="Close navigation menu"
-            className="sug-icon-button"
-            onClick={() => mobileDialog.current?.close()}
+            className="rs-icon-btn"
+            onClick={() => menuDialog.current?.close()}
             type="button"
           >
             <X aria-hidden="true" size={20} />
           </button>
         </div>
-        <nav aria-label="Mobile navigation" className="sug-mobile-nav">
-          <NavigationLinks onNavigate={() => mobileDialog.current?.close()} />
+        <nav aria-label="Mobile navigation" className="rs-sheet-nav">
+          {siteNavigation.map(({ href, label }) => (
+            <Link
+              className="rs-sheet-link"
+              href={href}
+              key={label}
+              onClick={() => menuDialog.current?.close()}
+            >
+              {label}
+            </Link>
+          ))}
+          <Link className="rs-sheet-link" href="/welfare" onClick={() => menuDialog.current?.close()}>
+            Welfare
+          </Link>
         </nav>
+        <button className="rs-emergency-pill rs-sheet-emergency" onClick={openEmergency} type="button">
+          <Phone aria-hidden="true" size={17} />
+          Emergency contacts
+        </button>
       </dialog>
     </>
   )

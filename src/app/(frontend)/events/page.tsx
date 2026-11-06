@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { PageBanner } from '@/components/SUG/PageBanner'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { formatLagosDateTime } from '@/utilities/formatLagosDateTime'
 
@@ -33,14 +34,8 @@ function getMonthLabel(dateString: string): string {
 function getDateTile(dateString: string): { day: string; month: string } {
   const date = new Date(dateString)
   return {
-    day: date.toLocaleDateString('en-NG', {
-      day: '2-digit',
-      timeZone: 'Africa/Lagos',
-    }),
-    month: date.toLocaleDateString('en-NG', {
-      month: 'short',
-      timeZone: 'Africa/Lagos',
-    }),
+    day: date.toLocaleDateString('en-NG', { day: '2-digit', timeZone: 'Africa/Lagos' }),
+    month: date.toLocaleDateString('en-NG', { month: 'short', timeZone: 'Africa/Lagos' }),
   }
 }
 
@@ -60,9 +55,7 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
     where: {
       and: [
         { _status: { equals: 'published' } },
-        isPast
-          ? { startsAt: { less_than: now } }
-          : { startsAt: { greater_than_equal: now } },
+        isPast ? { startsAt: { less_than: now } } : { startsAt: { greater_than_equal: now } },
       ],
     },
   })
@@ -76,68 +69,56 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
   }
 
   return (
-    <main className="sug-archive">
-      <div className="sug-archive-container">
-        <header className="sug-archive-heading">
-          <p className="sug-eyebrow">Campus life, together</p>
-          <h1>{isPast ? 'Past events' : 'Events'}</h1>
-          <p>Find what is coming up and make time to be part of campus life.</p>
-        </header>
-
-        <nav aria-label="Event time period" className="sug-archive-filters">
+    <main className="rs-main">
+      <PageBanner subtitle="Upcoming and past events." title="Events" />
+      <div className="rs-wrap rs-inner">
+        <nav aria-label="Event time period" className="rs-tabs">
           <Link
             aria-current={!isPast ? 'page' : undefined}
-            className={`sug-filter-pill${!isPast ? ' is-active' : ''}`}
+            className={!isPast ? 'rs-tab is-active' : 'rs-tab'}
             href="/events"
           >
-            Upcoming events
+            Upcoming
           </Link>
           <Link
             aria-current={isPast ? 'page' : undefined}
-            className={`sug-filter-pill${isPast ? ' is-active' : ''}`}
+            className={isPast ? 'rs-tab is-active' : 'rs-tab'}
             href="/events?view=past"
           >
-            Past events
+            Past
           </Link>
         </nav>
 
         {events.docs.length > 0 ? (
-          <div className="sug-events-by-month">
+          <div className="rs-months">
             {[...eventsByMonth.entries()].map(([month, monthEvents]) => (
-              <section aria-label={month} className="sug-event-month" key={month}>
-                <h2>{month}</h2>
-                <ul className="sug-event-directory-list">
+              <section aria-label={month} key={month}>
+                <h2 className="rs-month">{month}</h2>
+                <ul className="rs-rows rs-plain-list">
                   {monthEvents.map((event) => {
                     const date = getDateTile(event.startsAt)
-                    const banner =
-                      typeof event.banner === 'object' && event.banner ? event.banner : null
+                    const banner = typeof event.banner === 'object' && event.banner ? event.banner : null
                     const eventType = event.eventType ?? 'general'
 
                     return (
                       <li key={event.id}>
-                        <article className="sug-event-directory-row">
-                          <Link
-                            aria-label={`View ${event.title}`}
-                            className={`sug-date-tile event-${eventType}`}
-                            href={`/events/${event.slug}`}
-                          >
-                            <span>{date.day}</span>
-                            <strong>{date.month}</strong>
+                        <article className="rs-row rs-event-row">
+                          <Link aria-label={`View ${event.title}`} className="rs-date-tile" href={`/events/${event.slug}`}>
+                            <strong>{date.day}</strong>
+                            <span>{date.month}</span>
                           </Link>
-                          <div className="sug-event-directory-content">
-                            <span className="sug-event-type">{eventTypeLabels[eventType]}</span>
+                          <div className="rs-row-main">
+                            <span className="rs-chip">{eventTypeLabels[eventType]}</span>
                             <h3>
                               <Link href={`/events/${event.slug}`}>{event.title}</Link>
                             </h3>
                             <p>
-                              <span>{event.venue || 'Venue to be announced'}</span>
-                              <span aria-hidden="true">·</span>
-                              <time dateTime={event.startsAt}>
-                                {formatLagosDateTime(event.startsAt)}
-                              </time>
+                              {event.venue || 'Venue to be announced'} &middot;{' '}
+                              <time dateTime={event.startsAt}>{formatLagosDateTime(event.startsAt)}</time>
                               {event.endsAt && (
                                 <>
-                                  <span aria-hidden="true">–</span>
+                                  {' '}
+                                  &ndash;{' '}
                                   <time dateTime={event.endsAt}>
                                     {new Date(event.endsAt).toLocaleTimeString('en-NG', {
                                       hour: 'numeric',
@@ -150,15 +131,11 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
                             </p>
                           </div>
                           {banner?.url && (
-                            <Link
-                              aria-label={`View ${event.title}`}
-                              className="sug-event-directory-banner"
-                              href={`/events/${event.slug}`}
-                            >
+                            <Link aria-label={`View ${event.title}`} className="rs-event-thumb" href={`/events/${event.slug}`}>
                               <Image
                                 alt={banner.alt || ''}
                                 fill
-                                sizes="(max-width: 640px) 28vw, 180px"
+                                sizes="160px"
                                 src={getMediaUrl(banner.url, banner.updatedAt)}
                                 unoptimized
                               />
@@ -173,7 +150,8 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
             ))}
           </div>
         ) : (
-          <div className="sug-archive-empty">
+          <div className="rs-empty-state">
+            <Image alt="" height={160} src="/images/empty-state.png" width={160} />
             <h2>{isPast ? 'No past events yet' : 'Nothing on the calendar just yet'}</h2>
             <p>
               {isPast

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { ArrowLeft, Download } from 'lucide-react'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -21,10 +22,7 @@ async function getPublishedMemo(slug: string) {
     limit: 1,
     overrideAccess: false,
     where: {
-      and: [
-        { slug: { equals: slug } },
-        { _status: { equals: 'published' } },
-      ],
+      and: [{ slug: { equals: slug } }, { _status: { equals: 'published' } }],
     },
   })
 
@@ -43,37 +41,40 @@ export default async function MemoDetailPage({ params }: MemoDetailProps) {
   const downloadHref = `/api/memos/${encodeURIComponent(memo.slug)}/download`
 
   return (
-    <main className="sug-archive">
-      <article className="sug-memo-detail">
-        <Link className="sug-article-back" href="/memos">
-          ← All memos
-        </Link>
-        <header className="sug-memo-detail-header">
-          <span className="sug-memo-reference">{memo.refNumber}</span>
-          <h1>{memo.title}</h1>
-          <div className="sug-memo-detail-meta">
-            <span>Issued by {memo.issuedBy || 'Student Union Government'}</span>
-            <time dateTime={memo.issuedDate}>{formatDate(memo.issuedDate)}</time>
-            {typeof memo.category === 'object' && memo.category && (
-              <span className="sug-news-category">{memo.category.title}</span>
-            )}
-          </div>
-          {memo.summary && <p className="sug-memo-summary">{memo.summary}</p>}
-          <a className="sug-memo-button sug-memo-button-primary" href={downloadHref}>
-            Download memo PDF
-          </a>
-        </header>
-
-        <div className="sug-pdf-frame">
-          <object data={pdf.url} type="application/pdf" aria-label={`PDF preview of ${memo.title}`}>
-            <p>
-              Your browser cannot display this PDF.
-              {' '}
-              <a href={downloadHref}>Download the memo instead.</a>
+    <main className="rs-main">
+      <div className="rs-wrap rs-inner">
+        <article className="rs-article rs-article-wide">
+          <Link className="rs-back" href="/memos">
+            <ArrowLeft aria-hidden="true" size={16} /> All memos
+          </Link>
+          <header>
+            <span className="rs-ref">{memo.refNumber}</span>
+            <h1>{memo.title}</h1>
+            <p className="rs-byline">
+              Issued by {memo.issuedBy || 'Student Union Government'} &middot;{' '}
+              <time dateTime={memo.issuedDate}>{formatDate(memo.issuedDate)}</time>
+              {typeof memo.category === 'object' && memo.category && (
+                <>
+                  {' '}
+                  <span className="rs-chip">{memo.category.title}</span>
+                </>
+              )}
             </p>
-          </object>
-        </div>
-      </article>
+            {memo.summary && <p className="rs-lead">{memo.summary}</p>}
+            <a className="rs-btn rs-btn-green" href={downloadHref}>
+              <Download aria-hidden="true" size={18} /> Download memo PDF
+            </a>
+          </header>
+
+          <div className="rs-pdf">
+            <object aria-label={`PDF preview of ${memo.title}`} data={pdf.url} type="application/pdf">
+              <p>
+                Your browser cannot display this PDF. <a href={downloadHref}>Download the memo instead.</a>
+              </p>
+            </object>
+          </div>
+        </article>
+      </div>
     </main>
   )
 }
@@ -91,6 +92,6 @@ export async function generateMetadata({ params }: MemoDetailProps): Promise<Met
 
   return {
     title: `${memo.title} | Student Union Government`,
-    description: memo.summary || `${memo.refNumber} — issued ${formatDate(memo.issuedDate)}.`,
+    description: memo.summary || `${memo.refNumber} - issued ${formatDate(memo.issuedDate)}.`,
   }
 }

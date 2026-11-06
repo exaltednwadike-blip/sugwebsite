@@ -8,45 +8,58 @@ import {
   placeholderContactPhone,
   placeholderSecretariatAddress,
 } from '@/data/homepageRoundTwo'
+import { getEmergencyContacts } from '@/utilities/getEmergencyContacts'
 
 export async function Footer() {
   const payload = await getPayload({ config: configPromise })
-  const settings = await payload.findGlobal({
-    slug: 'site-settings',
-    overrideAccess: false,
-  })
+  const [settings, emergencyContacts] = await Promise.all([
+    payload.findGlobal({
+      slug: 'site-settings',
+      overrideAccess: false,
+    }),
+    getEmergencyContacts(),
+  ])
   const address = settings.secretariatAddress || placeholderSecretariatAddress
   const email = settings.contactEmail || placeholderContactEmail
   const phone = settings.contactPhone || placeholderContactPhone
   const year = new Date().getFullYear()
 
   return (
-    <footer className="sug-footer">
-      <div className="sug-footer-main">
-        <div className="sug-footer-brand">
-          <Link aria-label="Student Union Government home" className="sug-footer-logo-link" href="/">
-            <Image alt="" height={48} src="/logo.png" width={48} />
+    <footer className="rs-footer">
+      <div className="rs-wrap rs-footer-grid">
+        <div className="rs-footer-brand">
+          <Link aria-label="Student Union Government home" className="rs-footer-logo" href="/">
+            <Image alt="" height={56} src="/logo.png" width={56} />
+            <span>
+              <strong>Student Union Government</strong>
+              <small>UNN Enugu Campus</small>
+            </span>
           </Link>
-          <p className="sug-footer-name">Student Union Government</p>
-          <p className="sug-footer-campus">University of Nigeria, Enugu Campus</p>
-          <address>{address}</address>
         </div>
-        <nav aria-label="Read" className="sug-footer-column">
-          <h2>Read</h2>
-          <Link href="/posts">News</Link>
+        <nav aria-label="Quick links" className="rs-footer-col">
+          <h2>Quick Links</h2>
+          <Link href="/news">News</Link>
           <Link href="/memos">Memos</Link>
+          <Link href="/events">Events</Link>
+          <Link href="/executives">Executives</Link>
           <Link href="/resources">Resources</Link>
         </nav>
-        <nav aria-label="Students" className="sug-footer-column">
-          <h2>Students</h2>
-          <Link href="/welfare">Report an issue</Link>
-          <Link href="/lost-found">Lost &amp; Found</Link>
-          <Link href="/events">Events</Link>
-        </nav>
-        <div className="sug-footer-column">
-          <h2>Contact</h2>
+        <div className="rs-footer-col">
+          <h2>Emergency Numbers</h2>
+          {emergencyContacts.map(({ id, name, phone: number, phoneHref }) => (
+            <a href={phoneHref} key={id}>
+              {name}: {number}
+            </a>
+          ))}
+          {emergencyContacts.some(({ isPlaceholder }) => isPlaceholder) && (
+            <span className="rs-footer-note">Placeholder numbers - verify before use.</span>
+          )}
+        </div>
+        <div className="rs-footer-col">
+          <h2>Get in Touch</h2>
           <a href={`mailto:${email}`}>{email}</a>
           <a href={`tel:${phone.replace(/[^\d+]/g, '')}`}>{phone}</a>
+          <address>{address}</address>
           {settings.socialLinks?.map(({ id, label, url }) => (
             <a href={url} key={id ?? `${label}-${url}`} rel="noreferrer" target="_blank">
               {label}
@@ -54,8 +67,8 @@ export async function Footer() {
           ))}
         </div>
       </div>
-      <div className="sug-footer-bottom">
-        <p>© {year} Student Union Government, University of Nigeria, Enugu Campus.</p>
+      <div className="rs-wrap rs-footer-bottom">
+        <p>&copy; {year} Student Union Government, University of Nigeria, Enugu Campus. All rights reserved.</p>
       </div>
     </footer>
   )

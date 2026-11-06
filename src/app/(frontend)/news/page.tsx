@@ -1,9 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
+import { ArrowRight } from 'lucide-react'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { PageBanner } from '@/components/SUG/PageBanner'
+import { Pager } from '@/components/SUG/Pager'
 import { formatDate } from '@/utilities/formatDate'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 
@@ -46,37 +49,20 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
     sort: '-publishedAt',
     where: {
       and: [
-        {
-          _status: {
-            equals: 'published',
-          },
-        },
-        ...(selectedCategory
-          ? [
-              {
-                categories: {
-                  contains: selectedCategory.id,
-                },
-              },
-            ]
-          : []),
+        { _status: { equals: 'published' } },
+        ...(selectedCategory ? [{ categories: { contains: selectedCategory.id } }] : []),
       ],
     },
   })
 
   return (
-    <main className="sug-archive">
-      <div className="sug-archive-container">
-        <header className="sug-archive-heading">
-          <p className="sug-eyebrow">Campus voices, union updates</p>
-          <h1>News from your union</h1>
-          <p>Stories, notices and updates from across the University of Nigeria, Enugu Campus.</p>
-        </header>
-
-        <nav aria-label="Filter news by category" className="sug-archive-filters">
+    <main className="rs-main">
+      <PageBanner subtitle="Stay updated with the latest from the SUG." title="News" />
+      <div className="rs-wrap rs-inner">
+        <nav aria-label="Filter news by category" className="rs-tabs">
           <Link
             aria-current={!selectedCategory ? 'page' : undefined}
-            className={`sug-filter-pill${!selectedCategory ? ' is-active' : ''}`}
+            className={!selectedCategory ? 'rs-tab is-active' : 'rs-tab'}
             href="/news"
           >
             All
@@ -84,7 +70,7 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
           {categoriesResult.docs.map((category) => (
             <Link
               aria-current={selectedCategory?.id === category.id ? 'page' : undefined}
-              className={`sug-filter-pill${selectedCategory?.id === category.id ? ' is-active' : ''}`}
+              className={selectedCategory?.id === category.id ? 'rs-tab is-active' : 'rs-tab'}
               href={pageHref(1, category.slug)}
               key={category.id}
             >
@@ -94,91 +80,57 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
         </nav>
 
         {posts.docs.length > 0 ? (
-          <div className="sug-archive-grid">
+          <div className="rs-news-grid">
             {posts.docs.map((post) => {
-              const image =
-                typeof post.heroImage === 'object' && post.heroImage
-                  ? post.heroImage
-                  : null
+              const image = typeof post.heroImage === 'object' && post.heroImage ? post.heroImage : null
               const category = post.categories?.find((item) => typeof item === 'object')
+              const src = image?.url ? getMediaUrl(image.url, image.updatedAt) : '/images/news-1.jpg'
 
               return (
-                <article className="sug-archive-card" key={post.id}>
-                  <Link
-                    aria-label={`Read ${post.title}`}
-                    className="sug-archive-image"
-                    href={`/news/${post.slug}`}
-                  >
-                    {image?.url ? (
-                      <Image
-                        alt={image.alt || ''}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        src={getMediaUrl(image.url, image.updatedAt)}
-                        unoptimized
-                      />
-                    ) : (
-                      <span aria-hidden="true" className="sug-archive-image-placeholder" />
-                    )}
-                  </Link>
-                  <div className="sug-archive-card-copy">
-                    <div className="sug-archive-meta">
-                      <span className="sug-news-category">
-                        {typeof category === 'object' ? category.title : 'Union Press'}
-                      </span>
-                      <time dateTime={post.publishedAt || post.createdAt}>
-                        {formatDate(post.publishedAt || post.createdAt)}
-                      </time>
+                <article className="rs-news-card" key={post.id}>
+                  <Link className="rs-news-link" href={`/news/${post.slug}`}>
+                    <div className="rs-news-image">
+                      <Image alt={image?.alt || ''} fill sizes="(min-width: 900px) 33vw, 100vw" src={src} unoptimized />
                     </div>
-                    <h2>
-                      <Link href={`/news/${post.slug}`}>{post.title}</Link>
-                    </h2>
-                    {post.meta?.description && <p>{post.meta.description}</p>}
-                    <Link className="sug-news-link" href={`/news/${post.slug}`}>
-                      Read story <span aria-hidden="true">→</span>
-                    </Link>
-                  </div>
+                    <div className="rs-news-body">
+                      <div className="rs-news-meta">
+                        <span className="rs-chip">
+                          {typeof category === 'object' ? category.title : 'Union Press'}
+                        </span>
+                        <time dateTime={post.publishedAt || post.createdAt}>
+                          {formatDate(post.publishedAt || post.createdAt)}
+                        </time>
+                      </div>
+                      <h2>{post.title}</h2>
+                      {post.meta?.description && <p>{post.meta.description}</p>}
+                      <span className="rs-read-more">
+                        Read more <ArrowRight aria-hidden="true" size={15} />
+                      </span>
+                    </div>
+                  </Link>
                 </article>
               )
             })}
           </div>
         ) : (
-          <div className="sug-archive-empty">
+          <div className="rs-empty-state">
+            <Image alt="" height={160} src="/images/empty-state.png" width={160} />
             <h2>No news found just yet</h2>
             <p>
               {selectedCategory
                 ? `There are no published stories in ${selectedCategory.title} yet.`
                 : 'Published SUG stories will appear here. Please check back soon.'}
             </p>
-            {selectedCategory && <Link href="/news">See all news</Link>}
+            {selectedCategory && <Link className="rs-btn rs-btn-green" href="/news">See all news</Link>}
           </div>
         )}
 
-        {posts.totalPages > 1 && (
-          <nav aria-label="News pagination" className="sug-pagination">
-            {page > 1 ? (
-              <Link className="sug-pagination-link" href={pageHref(page - 1, selectedCategory?.slug)}>
-                Previous
-              </Link>
-            ) : (
-              <span aria-disabled="true" className="sug-pagination-link is-disabled">
-                Previous
-              </span>
-            )}
-            <span aria-live="polite">
-              Page {posts.page || page} of {posts.totalPages}
-            </span>
-            {page < posts.totalPages ? (
-              <Link className="sug-pagination-link" href={pageHref(page + 1, selectedCategory?.slug)}>
-                Next
-              </Link>
-            ) : (
-              <span aria-disabled="true" className="sug-pagination-link is-disabled">
-                Next
-              </span>
-            )}
-          </nav>
-        )}
+        <Pager
+          hrefFor={(p) => pageHref(p, selectedCategory?.slug)}
+          label="News pagination"
+          page={page}
+          totalPages={posts.totalPages}
+        />
       </div>
     </main>
   )

@@ -7,6 +7,8 @@ export interface HomepageNewsItem {
   headline: string
   author: string
   slug: string | null
+  excerpt: string
+  imageUrl: string | null
 }
 
 export interface HomepageNewsFilter {
@@ -15,59 +17,35 @@ export interface HomepageNewsFilter {
 }
 
 export const breakingHeadlines = [
-  'SUG town hall holds this week — watch this space for details.',
+  'SUG Advocates for a Better Learning Environment',
   'Student welfare desk is open for enquiries and support.',
   'New Union updates and campus notices are now on the website.',
 ] as const
 
 export const siteNavigation = [
-  { label: 'News', href: '/posts' },
+  { label: 'Home', href: '/' },
+  { label: 'News', href: '/news' },
   { label: 'Memos', href: '/memos' },
-  { label: 'Executives', href: '/executives' },
   { label: 'Events', href: '/events' },
+  { label: 'Executives', href: '/executives' },
   { label: 'Resources', href: '/resources' },
-  { label: 'Welfare', href: '/welfare' },
+  { label: 'Contact', href: '/contact' },
 ] as const
 
 export const heroContent = {
-  eyebrow: 'New from your union',
-  headline: 'Your campus. Your voice.',
-  highlight: 'Your union.',
-  description:
-    'The people, updates and opportunities shaping student life at the University of Nigeria, Enugu Campus.',
-  downloadHref: '/memos',
-  statementHref: '/memos',
+  headline: 'Together for a Greater UNEC',
+  subline: 'Your Student Union. Your Voice. Our Priority.',
+  primary: { label: 'Latest news', href: '/news' },
+  secondary: { label: 'Contact the SUG', href: '/contact' },
+  image: '/images/hero.jpg',
+  imageAlt: 'Smiling students standing together on the university campus',
 } as const
 
 export const utilityCards = [
-  {
-    title: 'Report an issue',
-    description: 'Get support with a campus concern.',
-    href: '/welfare',
-    icon: 'message',
-    tone: 'red',
-  },
-  {
-    title: 'Lost & Found',
-    description: 'Help reunite people with their things.',
-    href: '/lost-found',
-    icon: 'search',
-    tone: 'lime',
-  },
-  {
-    title: 'SUG Constitution',
-    description: 'Know the rules that guide your union.',
-    href: '/resources',
-    icon: 'book',
-    tone: 'green',
-  },
-  {
-    title: 'Events calendar',
-    description: 'See what is happening around campus.',
-    href: '/events',
-    icon: 'calendar',
-    tone: 'mint',
-  },
+  { title: 'Memos', description: 'View official memos', href: '/memos', icon: 'memos' },
+  { title: 'Resources', description: 'Access useful resources', href: '/resources', icon: 'resources' },
+  { title: 'Lost & Found', description: 'Find or report items', href: '/lost-found', icon: 'lost' },
+  { title: 'Anonymous Welfare', description: 'Share concerns safely', href: '/welfare', icon: 'welfare' },
 ] as const
 
 export const newsFilters: readonly ('All' | NewsCategory)[] = [
@@ -83,29 +61,27 @@ export const latestNews: {
   date: string
   headline: string
   author: string
+  excerpt: string
 }[] = [
   {
     category: 'Academic',
     date: 'May 12, 2025',
     headline: 'A new semester, a stronger student voice',
     author: 'SUG Press Team',
+    excerpt: 'What the new semester means for students and how your union is working for you.',
   },
   {
     category: 'Welfare',
     date: 'May 09, 2025',
     headline: 'Here is how to reach the student welfare desk',
     author: 'Welfare Committee',
+    excerpt: 'Support is available. Here is where to go and what to bring.',
   },
   {
     category: 'Sports',
     date: 'May 06, 2025',
     headline: 'Campus games bring students together',
     author: 'Sports Directorate',
-  },
-  {
-    category: 'Union Press',
-    date: 'May 02, 2025',
-    headline: 'A note from your Student Union Government',
-    author: 'Office of the President',
+    excerpt: 'A look at the games and the students who made them happen.',
   },
 ]

@@ -1,8 +1,12 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
+import { Search } from 'lucide-react'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { PageBanner } from '@/components/SUG/PageBanner'
+import { Pager } from '@/components/SUG/Pager'
 import { formatDate } from '@/utilities/formatDate'
 
 type MemosPageProps = {
@@ -37,60 +41,48 @@ export default async function MemosPage({ searchParams }: MemosPageProps) {
     where: {
       and: [
         { _status: { equals: 'published' } },
-        ...(query
-          ? [
-              {
-                or: [
-                  { title: { like: query } },
-                  { refNumber: { like: query } },
-                ],
-              },
-            ]
-          : []),
+        ...(query ? [{ or: [{ title: { like: query } }, { refNumber: { like: query } }] }] : []),
       ],
     },
   })
 
   return (
-    <main className="sug-archive">
-      <div className="sug-archive-container">
-        <header className="sug-archive-heading">
-          <p className="sug-eyebrow">Official notices and documents</p>
-          <h1>Union memos</h1>
-          <p>Find official statements, notices and resources issued by your Student Union Government.</p>
-        </header>
-
-        <form action="/memos" className="sug-memo-search" role="search">
-          <label htmlFor="memo-search">Search by title or reference number</label>
-          <div className="sug-memo-search-controls">
-            <input
-              autoComplete="off"
-              id="memo-search"
-              maxLength={120}
-              name="q"
-              placeholder="e.g. SUG/MEMO/2026/014"
-              type="search"
-              defaultValue={query}
-            />
-            <button type="submit">Search</button>
-          </div>
+    <main className="rs-main">
+      <PageBanner subtitle="Official memos and circulars." title="Memos" />
+      <div className="rs-wrap rs-inner">
+        <form action="/memos" className="rs-searchbar" role="search">
+          <label className="sr-only" htmlFor="memo-search">
+            Search by title or reference number
+          </label>
+          <input
+            autoComplete="off"
+            defaultValue={query}
+            id="memo-search"
+            maxLength={120}
+            name="q"
+            placeholder="Search memos by title or reference number"
+            type="search"
+          />
+          <button aria-label="Search" type="submit">
+            <Search aria-hidden="true" size={20} />
+          </button>
         </form>
 
         {memos.docs.length > 0 ? (
-          <div aria-label="Published memos" className="sug-memo-list">
+          <div aria-label="Published memos" className="rs-rows">
             {memos.docs.map((memo) => (
-              <article className="sug-memo-row" key={memo.id}>
-                <div className="sug-memo-information">
-                  <span className="sug-memo-reference">{memo.refNumber}</span>
+              <article className="rs-row" key={memo.id}>
+                <div className="rs-row-main">
+                  <span className="rs-ref">{memo.refNumber}</span>
                   <h2>{memo.title}</h2>
                   <time dateTime={memo.issuedDate}>{formatDate(memo.issuedDate)}</time>
                 </div>
-                <div className="sug-memo-actions">
-                  <Link className="sug-memo-button sug-memo-button-secondary" href={`/memos/${memo.slug}`}>
+                <div className="rs-row-actions">
+                  <Link className="rs-btn rs-btn-outline rs-btn-sm" href={`/memos/${memo.slug}`}>
                     Preview
                   </Link>
                   <Link
-                    className="sug-memo-button sug-memo-button-primary"
+                    className="rs-btn rs-btn-green rs-btn-sm"
                     href={`/api/memos/${encodeURIComponent(memo.slug)}/download`}
                   >
                     Download
@@ -100,42 +92,24 @@ export default async function MemosPage({ searchParams }: MemosPageProps) {
             ))}
           </div>
         ) : (
-          <div className="sug-archive-empty">
-            <h2>{query ? 'No matching memos' : 'No memos published yet'}</h2>
+          <div className="rs-empty-state">
+            <Image alt="" height={160} src="/images/empty-state.png" width={160} />
+            <h2>{query ? 'No matching memos' : 'No Items Yet'}</h2>
             <p>
               {query
                 ? 'Try another title or reference number.'
-                : 'Official SUG memos will appear here once they are published.'}
+                : 'There are no memos at the moment. Check back later.'}
             </p>
-            {query && <Link href="/memos">Clear search</Link>}
+            {query && <Link className="rs-btn rs-btn-green" href="/memos">Clear search</Link>}
           </div>
         )}
 
-        {memos.totalPages > 1 && (
-          <nav aria-label="Memo pagination" className="sug-pagination">
-            {page > 1 ? (
-              <Link className="sug-pagination-link" href={memoPageHref(page - 1, query)}>
-                Previous
-              </Link>
-            ) : (
-              <span aria-disabled="true" className="sug-pagination-link is-disabled">
-                Previous
-              </span>
-            )}
-            <span aria-live="polite">
-              Page {memos.page || page} of {memos.totalPages}
-            </span>
-            {page < memos.totalPages ? (
-              <Link className="sug-pagination-link" href={memoPageHref(page + 1, query)}>
-                Next
-              </Link>
-            ) : (
-              <span aria-disabled="true" className="sug-pagination-link is-disabled">
-                Next
-              </span>
-            )}
-          </nav>
-        )}
+        <Pager
+          hrefFor={(p) => memoPageHref(p, query)}
+          label="Memo pagination"
+          page={page}
+          totalPages={memos.totalPages}
+        />
       </div>
     </main>
   )

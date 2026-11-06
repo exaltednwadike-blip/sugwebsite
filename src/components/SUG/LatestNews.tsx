@@ -1,82 +1,48 @@
-'use client'
-
-import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
-import type { HomepageNewsFilter, HomepageNewsItem } from '@/data/homepage'
+import type { HomepageNewsItem } from '@/data/homepage'
 
-export function LatestNews({
-  items,
-  categories,
-}: {
-  items: HomepageNewsItem[]
-  categories: HomepageNewsFilter[]
-}) {
-  const [activeFilter, setActiveFilter] = useState('all')
-  const visibleNews =
-    activeFilter === 'all'
-      ? items.slice(0, 3)
-      : items.filter(
-          ({ category, categorySlug }) =>
-            categorySlug === activeFilter ||
-            (!categorySlug && category.toLowerCase() === activeFilter.toLowerCase()),
-        )
+const fallbackImages = ['/images/news-1.jpg', '/images/news-2.jpg', '/images/news-1.jpg'] as const
+
+export function LatestNews({ items }: { items: HomepageNewsItem[] }) {
+  const visible = items.slice(0, 3)
+  if (visible.length === 0) return null
 
   return (
-    <section aria-labelledby="latest-news-title" className="sug-news-section">
-      <div className="sug-section-heading">
-        <div>
-          <p className="sug-eyebrow">On campus, in the know</p>
-          <h2 id="latest-news-title">Latest from the union</h2>
-        </div>
-        <div aria-label="Filter news by category" className="sug-news-filters" role="group">
-          <button
-            aria-pressed={activeFilter === 'all'}
-            className={`sug-filter-pill${activeFilter === 'all' ? ' is-active' : ''}`}
-            onClick={() => setActiveFilter('all')}
-            type="button"
-          >
-            All
-          </button>
-          {categories.map((filter) => (
-            <button
-              aria-pressed={activeFilter === filter.slug}
-              className={`sug-filter-pill${activeFilter === filter.slug ? ' is-active' : ''}`}
-              key={filter.slug}
-              onClick={() => setActiveFilter(filter.slug)}
-              type="button"
-            >
-              {filter.label}
-            </button>
-          ))}
-        </div>
+    <section aria-labelledby="rs-news-title" className="rs-section">
+      <div className="rs-section-head">
+        <h2 id="rs-news-title">Latest from the Union</h2>
+        <Link className="rs-see-all" href="/news">
+          See all news <ArrowRight aria-hidden="true" size={16} />
+        </Link>
       </div>
-      <div className="sug-news-grid">
-        {visibleNews.map(({ author, category, date, headline, slug }, index) => (
-          <article
-            className={`sug-news-card${index === 0 ? ' sug-news-featured' : ''}`}
-            key={headline}
-          >
-            <div className="sug-news-meta">
-              <span className="sug-news-category">{category}</span>
-              <time>{date}</time>
-            </div>
-            <h3>{headline}</h3>
-            <p className="sug-news-author">By {author}</p>
-            <Link
-              aria-label={`Read: ${headline}`}
-              className="sug-news-link"
-              href={slug ? `/news/${slug}` : '/news'}
-            >
-              <span>Read story</span>
-              <ArrowUpRight aria-hidden="true" size={18} />
-            </Link>
-          </article>
-        ))}
-        {visibleNews.length === 0 && (
-          <p className="sug-news-empty">No updates in this category just yet. Check back soon.</p>
-        )}
+      <div className="rs-news-grid">
+        {visible.map((item, index) => {
+          const href = item.slug ? `/news/${item.slug}` : '/news'
+          const image = item.imageUrl ?? fallbackImages[index % fallbackImages.length]
+          return (
+            <article className="rs-news-card" key={item.headline}>
+              <Link className="rs-news-link" href={href}>
+                <div className="rs-news-image">
+                  <Image alt="" fill sizes="(min-width: 900px) 33vw, 100vw" src={image} unoptimized />
+                </div>
+                <div className="rs-news-body">
+                  <div className="rs-news-meta">
+                    <span className="rs-chip">{item.category}</span>
+                    <time>{item.date}</time>
+                  </div>
+                  <h3>{item.headline}</h3>
+                  {item.excerpt && <p>{item.excerpt}</p>}
+                  <span className="rs-read-more">
+                    Read more <ArrowRight aria-hidden="true" size={15} />
+                  </span>
+                </div>
+              </Link>
+            </article>
+          )
+        })}
       </div>
     </section>
   )

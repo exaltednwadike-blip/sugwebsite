@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { ArrowLeft, CalendarDays, MapPin } from 'lucide-react'
 
 import configPromise from '@payload-config'
 import { formatLagosDateTime } from '@/utilities/formatLagosDateTime'
@@ -32,10 +33,7 @@ async function findPublishedEvent(slug: string) {
     limit: 1,
     overrideAccess: false,
     where: {
-      and: [
-        { slug: { equals: slug } },
-        { _status: { equals: 'published' } },
-      ],
+      and: [{ slug: { equals: slug } }, { _status: { equals: 'published' } }],
     },
   })
 
@@ -52,49 +50,49 @@ export default async function EventDetailPage({ params }: EventDetailProps) {
   const eventType = event.eventType ?? 'general'
 
   return (
-    <main className="sug-archive">
-      <article className="sug-event-detail">
-        <Link className="sug-article-back" href="/events">
-          ← Back to events
-        </Link>
-        {banner?.url && (
-          <div className="sug-event-detail-banner">
-            <Image
-              alt={banner.alt || ''}
-              fill
-              priority
-              sizes="(max-width: 900px) 100vw, 900px"
-              src={getMediaUrl(banner.url, banner.updatedAt)}
-              unoptimized
-            />
-          </div>
-        )}
-        <header className="sug-event-detail-header">
-          <span className="sug-event-type">{eventTypeLabels[eventType]}</span>
-          <h1>{event.title}</h1>
-          <dl className="sug-event-facts">
-            <div>
-              <dt>When</dt>
-              <dd>
-                <time dateTime={event.startsAt}>{formatLagosDateTime(event.startsAt)}</time>
-                {event.endsAt && (
-                  <>
-                    <span aria-hidden="true"> – </span>
-                    <time dateTime={event.endsAt}>
-                      {formatLagosDateTime(event.endsAt)}
-                    </time>
-                  </>
-                )}
-              </dd>
+    <main className="rs-main">
+      <div className="rs-wrap rs-inner">
+        <article className="rs-article">
+          <Link className="rs-back" href="/events">
+            <ArrowLeft aria-hidden="true" size={16} /> Back to events
+          </Link>
+          {banner?.url && (
+            <div className="rs-article-cover">
+              <Image
+                alt={banner.alt || ''}
+                fill
+                priority
+                sizes="(min-width: 800px) 800px, 100vw"
+                src={getMediaUrl(banner.url, banner.updatedAt)}
+                unoptimized
+              />
             </div>
-            <div>
-              <dt>Where</dt>
-              <dd>{event.venue || 'Venue to be announced'}</dd>
-            </div>
-          </dl>
-        </header>
-        {event.description && <p className="sug-event-description">{event.description}</p>}
-      </article>
+          )}
+          <header>
+            <span className="rs-chip">{eventTypeLabels[eventType]}</span>
+            <h1>{event.title}</h1>
+            <ul className="rs-facts">
+              <li>
+                <CalendarDays aria-hidden="true" size={18} />
+                <span>
+                  <time dateTime={event.startsAt}>{formatLagosDateTime(event.startsAt)}</time>
+                  {event.endsAt && (
+                    <>
+                      {' '}
+                      &ndash; <time dateTime={event.endsAt}>{formatLagosDateTime(event.endsAt)}</time>
+                    </>
+                  )}
+                </span>
+              </li>
+              <li>
+                <MapPin aria-hidden="true" size={18} />
+                <span>{event.venue || 'Venue to be announced'}</span>
+              </li>
+            </ul>
+          </header>
+          {event.description && <p className="rs-lead">{event.description}</p>}
+        </article>
+      </div>
     </main>
   )
 }

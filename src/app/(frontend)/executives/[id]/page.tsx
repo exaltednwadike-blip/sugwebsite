@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { ArrowLeft } from 'lucide-react'
 
 import configPromise from '@payload-config'
 import { ExecutiveContactForm } from '@/components/SUG/ExecutiveContactForm'
@@ -26,10 +27,7 @@ async function findCurrentMember(id: string) {
     limit: 1,
     overrideAccess: false,
     where: {
-      and: [
-        { id: { equals: Number(id) } },
-        { isCurrent: { equals: true } },
-      ],
+      and: [{ id: { equals: Number(id) } }, { isCurrent: { equals: true } }],
     },
   })
 
@@ -54,40 +52,41 @@ export default async function ExecutiveProfilePage({ params }: ExecutiveProfileP
   const photo = typeof member.photo === 'object' && member.photo ? member.photo : null
 
   return (
-    <main className="sug-archive">
-      <article className="sug-executive-profile">
-        <Link className="sug-article-back" href="/executives">
-          ← All executives
-        </Link>
-        <header className="sug-profile-header">
-          {photo?.url ? (
-            <Image
-              alt={`${member.fullName}, ${member.position}`}
-              className="sug-profile-photo"
-              height={160}
-              src={getMediaUrl(photo.url, photo.updatedAt)}
-              unoptimized
-              width={160}
-            />
-          ) : (
-            <div aria-hidden="true" className="sug-profile-initials">
-              {getInitials(member.fullName)}
+    <main className="rs-main">
+      <div className="rs-wrap rs-inner">
+        <article className="rs-article">
+          <Link className="rs-back" href="/executives">
+            <ArrowLeft aria-hidden="true" size={16} /> All executives
+          </Link>
+          <header className="rs-profile-head">
+            {photo?.url ? (
+              <Image
+                alt={`${member.fullName}, ${member.position}`}
+                className="rs-profile-photo"
+                height={140}
+                src={getMediaUrl(photo.url, photo.updatedAt)}
+                unoptimized
+                width={140}
+              />
+            ) : (
+              <div aria-hidden="true" className="rs-profile-photo rs-exec-initials">
+                {getInitials(member.fullName)}
+              </div>
+            )}
+            <div>
+              <span className="rs-chip">{member.position}</span>
+              <h1>{member.fullName}</h1>
             </div>
-          )}
-          <p className="sug-eyebrow">Student Union Government</p>
-          <h1>{member.fullName}</h1>
-          <p className="sug-profile-position">{member.position}</p>
-        </header>
+          </header>
 
-        <div className="sug-profile-content">
           {member.portfolio && (
-            <section aria-labelledby="profile-portfolio-title" className="sug-profile-panel">
+            <section aria-labelledby="profile-portfolio-title" className="rs-panel">
               <h2 id="profile-portfolio-title">About the portfolio</h2>
-              <p className="sug-profile-portfolio">{member.portfolio}</p>
+              <p>{member.portfolio}</p>
             </section>
           )}
 
-          <section aria-labelledby="profile-contact-title" className="sug-profile-panel">
+          <section aria-labelledby="profile-contact-title" className="rs-panel">
             <h2 id="profile-contact-title">Office and contact</h2>
             {member.officeHours && (
               <p>
@@ -96,8 +95,7 @@ export default async function ExecutiveProfilePage({ params }: ExecutiveProfileP
             )}
             {member.publicEmail && (
               <p>
-                <strong>Email:</strong>{' '}
-                <a href={`mailto:${member.publicEmail}`}>{member.publicEmail}</a>
+                <strong>Email:</strong> <a href={`mailto:${member.publicEmail}`}>{member.publicEmail}</a>
               </p>
             )}
             {member.publicPhone && (
@@ -112,8 +110,8 @@ export default async function ExecutiveProfilePage({ params }: ExecutiveProfileP
           </section>
 
           <ExecutiveContactForm memberID={member.id} memberName={member.fullName} />
-        </div>
-      </article>
+        </article>
+      </div>
     </main>
   )
 }

@@ -6,6 +6,7 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
+import { EmergencyContacts } from './collections/EmergencyContacts'
 import { Events } from './collections/Events'
 import { ExcoMembers } from './collections/ExcoMembers'
 import { ExcoContactMessages } from './collections/ExcoContactMessages'
@@ -13,6 +14,7 @@ import { Media } from './collections/Media'
 import { Memos } from './collections/Memos'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Resources } from './collections/Resources'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -74,6 +76,8 @@ export default buildConfig({
     Posts,
     Media,
     Categories,
+    Resources,
+    EmergencyContacts,
     Events,
     ExcoMembers,
     ExcoContactMessages,

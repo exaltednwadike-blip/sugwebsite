@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { PageBanner } from '@/components/SUG/PageBanner'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 function getInitials(fullName: string): string {
@@ -24,54 +26,46 @@ export default async function ExecutivesPage() {
     overrideAccess: false,
     pagination: false,
     sort: 'sortOrder',
-    where: {
-      isCurrent: {
-        equals: true,
-      },
-    },
+    where: { isCurrent: { equals: true } },
   })
 
   return (
-    <main className="sug-archive">
-      <div className="sug-archive-container">
-        <header className="sug-archive-heading">
-          <p className="sug-eyebrow">Here to serve</p>
-          <h1>Meet your executives</h1>
-          <p>Get to know the current Student Union Government team and the work they do for you.</p>
-        </header>
-
+    <main className="rs-main">
+      <PageBanner subtitle="Meet the team that serves you." title="Our Executives" />
+      <div className="rs-wrap rs-inner">
         {members.docs.length > 0 ? (
-          <div className="sug-executives-grid sug-executives-directory">
+          <div className="rs-exec-grid">
             {members.docs.map((member) => {
               const photo = typeof member.photo === 'object' && member.photo ? member.photo : null
               return (
-                <article className="sug-executive-card" key={member.id}>
+                <article className="rs-exec-card" key={member.id}>
                   {photo?.url ? (
                     <Image
                       alt={`${member.fullName}, ${member.position}`}
-                      className="sug-executive-photo"
-                      height={104}
+                      className="rs-exec-photo"
+                      height={96}
                       src={getMediaUrl(photo.url, photo.updatedAt)}
                       unoptimized
-                      width={104}
+                      width={96}
                     />
                   ) : (
-                    <div aria-hidden="true" className="sug-executive-initials">
+                    <div aria-hidden="true" className="rs-exec-initials">
                       {getInitials(member.fullName)}
                     </div>
                   )}
                   <h2>{member.fullName}</h2>
-                  <p className="sug-executive-position">{member.position}</p>
-                  {member.portfolio && <p className="sug-executive-portfolio">{member.portfolio}</p>}
-                  <Link className="sug-contact-button" href={`/executives/${member.id}`}>
-                    View profile
+                  <p>{member.position}</p>
+                  <Link className="rs-btn rs-btn-outline rs-btn-sm" href={`/executives/${member.id}`}>
+                    View Profile
+                    <ArrowRight aria-hidden="true" size={15} />
                   </Link>
                 </article>
               )
             })}
           </div>
         ) : (
-          <div className="sug-archive-empty">
+          <div className="rs-empty-state">
+            <Image alt="" height={160} src="/images/empty-state.png" width={160} />
             <h2>Executive profiles are on the way</h2>
             <p>Current SUG executive profiles will appear here soon.</p>
           </div>

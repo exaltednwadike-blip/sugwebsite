@@ -14,6 +14,8 @@ import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 
 import './globals.css'
+import './restyle.css'
+import './inner.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const dmSans = DM_Sans({
