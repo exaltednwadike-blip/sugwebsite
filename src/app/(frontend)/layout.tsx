@@ -16,6 +16,7 @@ import { draftMode } from 'next/headers'
 import './globals.css'
 import './restyle.css'
 import './inner.css'
+import './tune.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const dmSans = DM_Sans({
@@ -31,8 +32,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html className={cn(dmSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
-        <link href="/favicon.ico" rel="icon" sizes="32x32" />
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        <link href="/favicon.ico" rel="icon" sizes="any" />
+        <link href="/favicon.png" rel="icon" type="image/png" />
+        <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
       </head>
       <body>
         <Providers>

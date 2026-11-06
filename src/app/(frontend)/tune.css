@@ -1,0 +1,104 @@
+/* TUNE: lighter type, smaller icons, more breathing room. Delete this file and its import in layout.tsx to undo. */
+
+.rs-main, .rs-header, .rs-footer, .rs-dialog, .rs-banner, .rs-ticker { font-size: 15px; line-height: 1.55; }
+.rs-wrap { width: min(100% - 40px, 1160px); }
+
+/* Headings: lighter and smaller */
+.rs-main h1, .rs-main h2, .rs-main h3, .rs-main h4, .rs-banner h1, .rs-dialog h2, .rs-dialog h3 { font-weight: 600; letter-spacing: -0.015em; }
+.rs-hero-copy h1 { font-size: clamp(1.6rem, 6.4vw, 2.5rem); line-height: 1.12; letter-spacing: -0.02em; max-width: 16ch; }
+.rs-hero-copy p { font-size: 0.95rem; margin: 10px 0 22px; line-height: 1.6; }
+.rs-banner { padding: 30px 0 34px; }
+.rs-banner h1 { font-size: clamp(1.5rem, 5.5vw, 2.1rem); }
+.rs-banner p { font-size: 0.95rem; }
+.rs-section-head h2 { font-size: 1.15rem; }
+.rs-article h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); line-height: 1.18; }
+.rs-empty-state h2 { font-size: 1.15rem; }
+.rs-welfare h2 { font-size: 1.25rem; }
+.rs-panel h2 { font-size: 1.05rem; }
+.rs-news-body h2, .rs-news-body h3 { font-size: 0.98rem; line-height: 1.35; }
+.rs-row-main h2, .rs-row-main h3 { font-size: 0.98rem; }
+.rs-event-body h3 { font-size: 0.95rem; }
+.rs-exec-card h2, .rs-exec-card h3 { font-size: 0.98rem; }
+.rs-lead { font-size: 0.98rem; }
+
+/* Buttons, chips, nav */
+.rs-btn { font-weight: 600; font-size: 0.88rem; padding: 0 18px; min-height: 44px; }
+.rs-btn-sm { font-size: 0.82rem; padding: 0 14px; min-height: 40px; }
+.rs-chip, .rs-ref { font-weight: 600; font-size: 0.7rem; padding: 3px 9px; }
+.rs-tab { font-weight: 600; font-size: 0.85rem; padding: 0 16px; }
+.rs-nav-link { font-size: 0.88rem; }
+.rs-nav-link.is-active { font-weight: 600; }
+.rs-brand-title { font-weight: 600; font-size: 0.9rem; }
+.rs-brand-sub { font-size: 0.7rem; }
+.rs-logo { width: 38px; height: 38px; }
+.rs-header-inner { min-height: 62px; }
+.rs-ticker-label { font-weight: 600; font-size: 0.82rem; }
+.rs-ticker-item, .rs-ticker-static { font-size: 0.82rem; }
+.rs-read-more, .rs-see-all, .rs-back { font-weight: 600; font-size: 0.85rem; }
+.rs-footer-col h2 { font-weight: 600; font-size: 0.9rem; }
+.rs-footer a, .rs-footer address, .rs-footer-logo small { font-size: 0.86rem; }
+.rs-footer-logo strong { font-weight: 600; font-size: 0.98rem; }
+.rs-contact-phone { font-weight: 600; font-size: 0.88rem; }
+.rs-sheet-link { font-weight: 600; font-size: 0.95rem; }
+
+/* Icons and avatars */
+.rs-icon-btn { width: 42px; height: 42px; }
+.rs-icon-btn svg { width: 19px; height: 19px; }
+.rs-icon-btn-red { width: 38px; height: 38px; }
+.rs-hub-icon { width: 38px; height: 38px; margin-bottom: 2px; }
+.rs-hub-icon svg { width: 19px; height: 19px; }
+.rs-hub-title { font-weight: 600; font-size: 0.86rem; }
+.rs-hub-desc { font-size: 0.74rem; }
+.rs-hub-card { padding: 16px 10px; }
+.rs-welfare-icon { width: 46px; height: 46px; }
+.rs-welfare-icon svg { width: 22px; height: 22px; }
+.rs-file-icon { width: 38px; height: 38px; }
+.rs-file-icon svg { width: 18px; height: 18px; }
+.rs-date-tile { width: 54px; min-width: 54px; height: 58px; }
+.rs-date-tile strong { font-size: 1.15rem; font-weight: 600; }
+.rs-date-tile span { font-size: 0.7rem; font-weight: 600; }
+.rs-exec-photo, .rs-exec-initials { width: 80px; height: 80px; }
+.rs-exec-initials { font-size: 1.3rem; font-weight: 600; }
+.rs-profile-photo { width: 104px; height: 104px; }
+.rs-empty-state img { width: 120px; height: auto; }
+
+/* More space */
+.rs-section { padding-top: 56px; }
+.rs-section-head { margin-bottom: 20px; }
+.rs-hero { margin-top: 20px; }
+.rs-hero-media { height: 250px; margin-top: 22px; }
+.rs-hub { margin-top: 28px; }
+.rs-news-grid { gap: 20px; }
+.rs-news-body { padding: 16px 18px 18px; }
+.rs-news-body p { font-size: 0.86rem; }
+.rs-rows { gap: 14px; }
+.rs-row { padding: 16px 18px; }
+.rs-event { padding: 14px 16px; }
+.rs-exec-card { padding: 24px 20px; }
+.rs-panel { padding: 24px; margin-bottom: 20px; }
+.rs-inner { padding-top: 34px; padding-bottom: 20px; }
+.rs-tabs { margin-bottom: 24px; gap: 10px; }
+.rs-searchbar { margin-bottom: 26px; }
+.rs-welfare { padding: 40px 24px; }
+.rs-footer { margin-top: 72px; padding-top: 48px; }
+.rs-footer-grid { gap: 32px; }
+.rs-pager { margin-top: 36px; }
+.rs-hero-actions { gap: 12px; }
+
+@media (min-width: 1024px) {
+  .rs-hero-copy h1 { font-size: 2.6rem; }
+  .rs-hero-copy { padding: 72px 0 72px 56px; }
+  .rs-hero-copy p { font-size: 1rem; }
+  .rs-banner { padding: 40px 0 44px; }
+  .rs-banner h1 { font-size: 2.3rem; }
+  .rs-section { padding-top: 68px; }
+  .rs-hub { margin-top: 36px; }
+  .rs-hub-card { padding: 22px 16px; }
+  .rs-section-head h2 { font-size: 1.3rem; }
+  .rs-inner { padding-top: 40px; }
+}
+
+/* Older pages that still use sug- classes (welfare, lost and found, officials) */
+.sug-archive h1, .sug-archive-heading h1, .sug-article h1, .sug-profile-header h1 { font-weight: 600; font-size: clamp(1.5rem, 5vw, 2.1rem); letter-spacing: -0.015em; }
+.sug-archive h2, .sug-archive h3 { font-weight: 600; font-size: 1.05rem; }
+.sug-archive-container { padding-top: 34px; padding-bottom: 20px; }
