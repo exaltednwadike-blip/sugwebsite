@@ -77,6 +77,8 @@ export interface Config {
     'exco-members': ExcoMember;
     'exco-contact-messages': ExcoContactMessage;
     memos: Memo;
+    'welfare-tickets': WelfareTicket;
+    'welfare-ticket-messages': WelfareTicketMessage;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -105,6 +107,8 @@ export interface Config {
     'exco-members': ExcoMembersSelect<false> | ExcoMembersSelect<true>;
     'exco-contact-messages': ExcoContactMessagesSelect<false> | ExcoContactMessagesSelect<true>;
     memos: MemosSelect<false> | MemosSelect<true>;
+    'welfare-tickets': WelfareTicketsSelect<false> | WelfareTicketsSelect<true>;
+    'welfare-ticket-messages': WelfareTicketMessagesSelect<false> | WelfareTicketMessagesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -908,6 +912,34 @@ export interface Memo {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "welfare-tickets".
+ */
+export interface WelfareTicket {
+  id: number;
+  ticketCode: string;
+  secretHash?: string | null;
+  category: 'harassment' | 'academic' | 'health' | 'hostel-accommodation' | 'financial' | 'safety' | 'other';
+  description: string;
+  optionalContact?: string | null;
+  status: 'new' | 'in-review' | 'in-progress' | 'resolved' | 'closed';
+  internalNotes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "welfare-ticket-messages".
+ */
+export interface WelfareTicketMessage {
+  id: number;
+  ticket: number | WelfareTicket;
+  sender: 'student' | 'staff';
+  body: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1135,6 +1167,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'memos';
         value: number | Memo;
+      } | null)
+    | ({
+        relationTo: 'welfare-tickets';
+        value: number | WelfareTicket;
+      } | null)
+    | ({
+        relationTo: 'welfare-ticket-messages';
+        value: number | WelfareTicketMessage;
       } | null)
     | ({
         relationTo: 'users';
@@ -1582,6 +1622,32 @@ export interface MemosSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "welfare-tickets_select".
+ */
+export interface WelfareTicketsSelect<T extends boolean = true> {
+  ticketCode?: T;
+  secretHash?: T;
+  category?: T;
+  description?: T;
+  optionalContact?: T;
+  status?: T;
+  internalNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "welfare-ticket-messages_select".
+ */
+export interface WelfareTicketMessagesSelect<T extends boolean = true> {
+  ticket?: T;
+  sender?: T;
+  body?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

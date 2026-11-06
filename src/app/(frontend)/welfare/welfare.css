@@ -1,0 +1,32 @@
+.wf-banner { background: #0A3D2A url('/images/pattern.png') center / cover; color: #fff; padding: 48px 20px; text-align: center; }
+.wf-banner h1 { font-size: 2rem; font-weight: 700; margin: 0 0 8px; }
+.wf-banner p { margin: 0; opacity: 0.9; }
+.wf-wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 56px; display: grid; gap: 20px; color: #0A3D2A; }
+.wf-card { background: #fff; border: 1px solid #D5E8DB; border-radius: 16px; padding: 20px; box-shadow: 0 2px 10px rgba(10, 61, 42, 0.06); display: grid; gap: 16px; }
+.wf-card h2 { margin: 0; font-size: 1.25rem; }
+.wf-how { background: #F3FAF5; }
+.wf-how ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.wf-how a, .wf-center a { color: #12804A; font-weight: 600; text-decoration: underline; }
+.wf-center { text-align: center; margin: 0; }
+.wf-field { display: grid; gap: 6px; }
+.wf-field label { font-weight: 600; }
+.wf-field select, .wf-field textarea, .wf-field input { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #D5E8DB; border-radius: 12px; font: inherit; background: #fff; color: #0A3D2A; }
+.wf-field textarea { resize: vertical; }
+.wf-field select:focus, .wf-field textarea:focus, .wf-field input:focus, .wf-btn:focus-visible { outline: 3px solid #12804A; outline-offset: 2px; }
+.wf-note { margin: 0; font-size: 0.875rem; color: #3d5a4c; }
+.wf-error { margin: 0; padding: 10px 12px; border-radius: 12px; background: #fdecec; color: #8a1f1f; font-weight: 600; }
+.wf-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.wf-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 20px; border-radius: 999px; font: inherit; font-weight: 600; cursor: pointer; text-decoration: none; border: 2px solid #12804A; }
+.wf-btn-solid { background: #12804A; color: #fff; }
+.wf-btn-solid:disabled { opacity: 0.6; cursor: not-allowed; }
+.wf-btn-outline { background: #fff; color: #12804A; }
+.wf-success { background: #F3FAF5; }
+.wf-secret-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border-radius: 12px; background: #fff; border: 1px solid #D5E8DB; }
+.wf-label { display: block; font-size: 0.8rem; color: #3d5a4c; }
+.wf-code { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.04em; word-break: break-all; }
+.wf-thread { display: grid; gap: 10px; }
+.wf-msg { padding: 12px; border-radius: 12px; border: 1px solid #D5E8DB; background: #fff; }
+.wf-msg-staff { background: #F3FAF5; }
+.wf-msg small { display: block; color: #3d5a4c; margin-bottom: 4px; }
+.wf-pill { display: inline-block; padding: 2px 12px; border-radius: 999px; background: #12804A; color: #fff; font-size: 0.85rem; font-weight: 600; }
+.wf-wrap-inner { display: grid; gap: 20px; }

@@ -15,6 +15,8 @@ import { Memos } from './collections/Memos'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Resources } from './collections/Resources'
+import { WelfareTickets } from './collections/WelfareTickets'
+import { WelfareTicketMessages } from './collections/WelfareTicketMessages'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -82,6 +84,8 @@ export default buildConfig({
     ExcoMembers,
     ExcoContactMessages,
     Memos,
+    WelfareTickets,
+    WelfareTicketMessages,
     Users,
   ],
   cors: [getServerSideURL()].filter(Boolean),
