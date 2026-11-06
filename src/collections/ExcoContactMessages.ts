@@ -1,12 +1,12 @@
 import type { CollectionConfig } from 'payload'
 
-import { isEditorOrAbove, isSuperAdmin } from '../access/roles'
+import { isEditorOrAbove } from '../access/roles'
 
 export const ExcoContactMessages: CollectionConfig<'exco-contact-messages'> = {
   slug: 'exco-contact-messages',
   access: {
     create: () => false,
-    delete: isSuperAdmin,
+    delete: isEditorOrAbove,
     read: isEditorOrAbove,
     update: isEditorOrAbove,
   },

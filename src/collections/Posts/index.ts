@@ -1,3 +1,4 @@
+import { isNewsStaff } from '@/access/newsStaff'
 import type { CollectionConfig } from 'payload'
 
 import {
@@ -30,10 +31,10 @@ import { slugField } from 'payload'
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
   access: {
-    create: isEditorOrAbove,
-    delete: isEditorOrAbove,
+    create: isNewsStaff,
+    delete: isNewsStaff,
     read: authenticatedOrPublished,
-    update: isEditorOrAbove,
+    update: isNewsStaff,
   },
   // This config controls what's populated by default when a post is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property

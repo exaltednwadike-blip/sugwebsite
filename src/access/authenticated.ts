@@ -1,9 +1,6 @@
-import type { AccessArgs } from 'payload'
+import type { Access } from 'payload'
 
-import type { User } from '@/payload-types'
+import { isEditorOrAbove } from './roles'
 
-type isAuthenticated = (args: AccessArgs<User>) => boolean
-
-export const authenticated: isAuthenticated = ({ req: { user } }) => {
-  return Boolean(user)
-}
+/** Content collections (pages, categories, settings...) are limited to editors and super admins. */
+export const authenticated: Access = (args) => isEditorOrAbove(args)

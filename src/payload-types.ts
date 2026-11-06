@@ -444,7 +444,9 @@ export interface User {
   id: number;
   fullName: string;
   name?: string | null;
-  role: 'super_admin' | 'editor' | 'welfare_manager' | 'moderator';
+  position?:
+    ('president' | 'speaker' | 'director_welfare' | 'cso_1' | 'cso_2' | 'pro' | 'website_admin' | 'other') | null;
+  role: 'super_admin' | 'editor' | 'news_editor' | 'welfare_manager' | 'moderator';
   isActive?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -1732,6 +1734,7 @@ export interface LostFoundClaimsSelect<T extends boolean = true> {
 export interface UsersSelect<T extends boolean = true> {
   fullName?: T;
   name?: T;
+  position?: T;
   role?: T;
   isActive?: T;
   updatedAt?: T;

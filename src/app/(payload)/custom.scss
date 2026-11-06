@@ -1,0 +1,36 @@
+/* SUG admin theme: green and white */
+.btn--style-primary {
+  --bg-color: #12804a;
+  --color: #ffffff;
+  --hover-bg: #0a3d2a;
+  --hover-color: #ffffff;
+}
+
+.btn--style-secondary {
+  --color: #12804a;
+}
+
+.template-minimal {
+  background: linear-gradient(160deg, #0a3d2a 0%, #12804a 100%);
+}
+
+.template-minimal .template-minimal__wrap {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.nav__link:hover,
+.nav__link:focus-visible {
+  color: #12804a;
+}
+
+.nav__link.active,
+.nav__link[aria-current='page'] {
+  color: #12804a;
+  font-weight: 700;
+}
+
+:focus-visible {
+  outline-color: #12804a;
+}

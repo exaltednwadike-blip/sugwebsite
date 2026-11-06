@@ -35,14 +35,22 @@ export default buildConfig({
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
-      beforeLogin: ['@/components/BeforeLogin'],
+      graphics: {
+        Icon: '@/components/admin/SugIcon#SugIcon',
+        Logo: '@/components/admin/SugLogo#SugLogo',
+      },
+      beforeLogin: ['@/components/admin/SugBeforeLogin#SugBeforeLogin'],
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.
-      beforeDashboard: ['@/components/BeforeDashboard'],
+      beforeDashboard: ['@/components/admin/SugDashboard#SugDashboard'],
     },
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      titleSuffix: '- SUG Admin',
+    },
+    theme: 'light',
     user: Users.slug,
     livePreview: {
       breakpoints: [

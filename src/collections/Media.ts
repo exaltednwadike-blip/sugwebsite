@@ -1,3 +1,4 @@
+import { isNewsStaff } from '@/access/newsStaff'
 import {
   APIError,
   type CollectionBeforeOperationHook,
@@ -36,10 +37,10 @@ export const Media: CollectionConfig = {
   slug: 'media',
   folders: true,
   access: {
-    create: isEditorOrAbove,
-    delete: isEditorOrAbove,
+    create: isNewsStaff,
+    delete: isNewsStaff,
     read: anyone,
-    update: isEditorOrAbove,
+    update: isNewsStaff,
   },
   fields: [
     {

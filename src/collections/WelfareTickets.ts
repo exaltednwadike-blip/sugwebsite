@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { isSuperAdmin, isWelfareStaff } from '../access/roles'
+import { isWelfareStaff } from '../access/roles'
 import { hideFromNonWelfare } from '../access/welfareVisibility'
 
 export const WelfareTickets: CollectionConfig = {
@@ -8,7 +8,7 @@ export const WelfareTickets: CollectionConfig = {
   labels: { singular: 'Welfare Ticket', plural: 'Welfare Tickets' },
   access: {
     create: () => false,
-    delete: isSuperAdmin,
+    delete: isWelfareStaff,
     read: isWelfareStaff,
     update: isWelfareStaff,
   },

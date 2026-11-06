@@ -1,7 +1,10 @@
 import type { Access } from 'payload'
 
-export const authenticatedOrPublished: Access = ({ req: { user } }) => {
-  if (user) {
+import { isNewsStaff } from './newsStaff'
+
+/** Staff who manage content see drafts. Everyone else sees only published items. */
+export const authenticatedOrPublished: Access = (args) => {
+  if (isNewsStaff(args)) {
     return true
   }
 
