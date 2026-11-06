@@ -79,6 +79,8 @@ export interface Config {
     memos: Memo;
     'welfare-tickets': WelfareTicket;
     'welfare-ticket-messages': WelfareTicketMessage;
+    'lost-found-items': LostFoundItem;
+    'lost-found-claims': LostFoundClaim;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -109,6 +111,8 @@ export interface Config {
     memos: MemosSelect<false> | MemosSelect<true>;
     'welfare-tickets': WelfareTicketsSelect<false> | WelfareTicketsSelect<true>;
     'welfare-ticket-messages': WelfareTicketMessagesSelect<false> | WelfareTicketMessagesSelect<true>;
+    'lost-found-items': LostFoundItemsSelect<false> | LostFoundItemsSelect<true>;
+    'lost-found-claims': LostFoundClaimsSelect<false> | LostFoundClaimsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -940,6 +944,39 @@ export interface WelfareTicketMessage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lost-found-items".
+ */
+export interface LostFoundItem {
+  id: number;
+  kind: 'lost' | 'found';
+  title: string;
+  description?: string | null;
+  location: string;
+  dateOccurred: string;
+  photo?: (number | null) | Media;
+  status: 'pending' | 'approved' | 'returned' | 'rejected';
+  contactName?: string | null;
+  contactInfo: string;
+  staffNotes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lost-found-claims".
+ */
+export interface LostFoundClaim {
+  id: number;
+  item: number | LostFoundItem;
+  claimerName: string;
+  claimerContact: string;
+  message: string;
+  status: 'new' | 'handled';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1175,6 +1212,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'welfare-ticket-messages';
         value: number | WelfareTicketMessage;
+      } | null)
+    | ({
+        relationTo: 'lost-found-items';
+        value: number | LostFoundItem;
+      } | null)
+    | ({
+        relationTo: 'lost-found-claims';
+        value: number | LostFoundClaim;
       } | null)
     | ({
         relationTo: 'users';
@@ -1646,6 +1691,37 @@ export interface WelfareTicketMessagesSelect<T extends boolean = true> {
   ticket?: T;
   sender?: T;
   body?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lost-found-items_select".
+ */
+export interface LostFoundItemsSelect<T extends boolean = true> {
+  kind?: T;
+  title?: T;
+  description?: T;
+  location?: T;
+  dateOccurred?: T;
+  photo?: T;
+  status?: T;
+  contactName?: T;
+  contactInfo?: T;
+  staffNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lost-found-claims_select".
+ */
+export interface LostFoundClaimsSelect<T extends boolean = true> {
+  item?: T;
+  claimerName?: T;
+  claimerContact?: T;
+  message?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }

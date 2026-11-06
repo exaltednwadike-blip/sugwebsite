@@ -47,6 +47,9 @@ const nextConfig: NextConfig = {
     return webpackConfig
   },
   reactStrictMode: true,
+  experimental: {
+    serverActions: { bodySizeLimit: '5mb' },
+  },
   redirects,
   turbopack: {
     root: path.resolve(dirname),

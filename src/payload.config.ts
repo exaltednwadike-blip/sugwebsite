@@ -17,6 +17,8 @@ import { Posts } from './collections/Posts'
 import { Resources } from './collections/Resources'
 import { WelfareTickets } from './collections/WelfareTickets'
 import { WelfareTicketMessages } from './collections/WelfareTicketMessages'
+import { LostFoundClaims } from './collections/LostFoundClaims'
+import { LostFoundItems } from './collections/LostFoundItems'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -86,6 +88,8 @@ export default buildConfig({
     Memos,
     WelfareTickets,
     WelfareTicketMessages,
+    LostFoundItems,
+    LostFoundClaims,
     Users,
   ],
   cors: [getServerSideURL()].filter(Boolean),
