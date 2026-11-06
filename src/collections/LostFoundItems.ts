@@ -1,3 +1,4 @@
+import { notifyLostFoundItem } from '@/lib/notify'
 import type { CollectionConfig } from 'payload'
 
 import { approvedOrStaff, hideFromNonModeration, isModerationStaff } from '../access/moderation'
@@ -17,6 +18,9 @@ export const LostFoundItems: CollectionConfig = {
     group: 'SUG',
     hidden: hideFromNonModeration,
     useAsTitle: 'title',
+  },
+  hooks: {
+    afterChange: [notifyLostFoundItem],
   },
   fields: [
     {

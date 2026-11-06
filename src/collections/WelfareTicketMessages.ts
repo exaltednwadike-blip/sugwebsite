@@ -1,3 +1,4 @@
+import { notifyWelfareReply } from '@/lib/notify'
 import type { CollectionConfig } from 'payload'
 
 import { isWelfareStaff } from '../access/roles'
@@ -17,6 +18,9 @@ export const WelfareTicketMessages: CollectionConfig = {
     group: 'SUG',
     hidden: hideFromNonWelfare,
     useAsTitle: 'sender',
+  },
+  hooks: {
+    afterChange: [notifyWelfareReply],
   },
   fields: [
     {

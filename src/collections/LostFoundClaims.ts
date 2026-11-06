@@ -1,3 +1,4 @@
+import { notifyLostFoundClaim } from '@/lib/notify'
 import type { CollectionConfig } from 'payload'
 
 import { hideFromNonModeration } from '../access/moderation'
@@ -17,6 +18,9 @@ export const LostFoundClaims: CollectionConfig = {
     group: 'SUG',
     hidden: hideFromNonModeration,
     useAsTitle: 'claimerName',
+  },
+  hooks: {
+    afterChange: [notifyLostFoundClaim],
   },
   fields: [
     { name: 'item', type: 'relationship', relationTo: 'lost-found-items', required: true },

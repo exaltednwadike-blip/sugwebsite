@@ -1,3 +1,4 @@
+import { notifyWelfareTicket } from '@/lib/notify'
 import type { CollectionConfig } from 'payload'
 
 import { isWelfareStaff } from '../access/roles'
@@ -17,6 +18,9 @@ export const WelfareTickets: CollectionConfig = {
     group: 'SUG',
     hidden: hideFromNonWelfare,
     useAsTitle: 'ticketCode',
+  },
+  hooks: {
+    afterChange: [notifyWelfareTicket],
   },
   fields: [
     {

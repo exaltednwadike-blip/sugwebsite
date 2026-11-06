@@ -1,3 +1,4 @@
+import { notifyContactMessage } from '@/lib/notify'
 import type { CollectionConfig } from 'payload'
 
 import { isEditorOrAbove } from '../access/roles'
@@ -14,6 +15,9 @@ export const ExcoContactMessages: CollectionConfig<'exco-contact-messages'> = {
     defaultColumns: ['subject', 'member', 'senderName', 'senderEmail', 'isRead', 'createdAt'],
     group: 'SUG',
     useAsTitle: 'subject',
+  },
+  hooks: {
+    afterChange: [notifyContactMessage],
   },
   fields: [
     {
