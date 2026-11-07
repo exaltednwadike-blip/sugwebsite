@@ -6,10 +6,30 @@ import { usePathname } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { ChevronRight, Menu, Phone, Search, X } from 'lucide-react'
 
-import { breakingHeadlines, siteNavigation } from '@/data/homepage'
+import { siteNavigation } from '@/data/homepage'
 import type { EmergencyContactSummary } from '@/data/emergencyContacts'
+import type { BreakingItem } from '@/utilities/getBreakingNews'
 
-export function SiteHeader({ contacts }: { contacts: EmergencyContactSummary[] }) {
+function TickerText({ item, hidden = false }: { item: BreakingItem; hidden?: boolean }) {
+  if (!item.href) return <>{item.text}</>
+  return (
+    <Link
+      href={item.href}
+      style={{ color: 'inherit', textDecoration: 'none' }}
+      tabIndex={hidden ? -1 : undefined}
+    >
+      {item.text}
+    </Link>
+  )
+}
+
+export function SiteHeader({
+  contacts,
+  breaking,
+}: {
+  contacts: EmergencyContactSummary[]
+  breaking: BreakingItem[]
+}) {
   const pathname = usePathname()
   const emergencyDialog = useRef<HTMLDialogElement>(null)
   const menuDialog = useRef<HTMLDialogElement>(null)
@@ -88,37 +108,41 @@ export function SiteHeader({ contacts }: { contacts: EmergencyContactSummary[] }
         )}
       </header>
 
-      <div aria-label="Breaking news" className="rs-ticker" role="region">
-        <div className="rs-wrap rs-ticker-inner">
-          <span className="rs-ticker-label">Breaking:</span>
-          <div className="rs-ticker-window">
-            <div className="rs-ticker-track">
-              <div className="rs-ticker-group">
-                {breakingHeadlines.map((headline) => (
-                  <span className="rs-ticker-item" key={headline}>
-                    {headline}
-                  </span>
-                ))}
-              </div>
-              <div aria-hidden="true" className="rs-ticker-group">
-                {breakingHeadlines.map((headline) => (
-                  <span className="rs-ticker-item" key={headline}>
-                    {headline}
-                  </span>
-                ))}
+      {breaking.length > 0 && (
+        <div aria-label="Breaking news" className="rs-ticker" role="region">
+          <div className="rs-wrap rs-ticker-inner">
+            <span className="rs-ticker-label">Breaking:</span>
+            <div className="rs-ticker-window">
+              <div className="rs-ticker-track">
+                <div className="rs-ticker-group">
+                  {breaking.map((item, index) => (
+                    <span className="rs-ticker-item" key={`${index}-${item.text}`}>
+                      <TickerText item={item} />
+                    </span>
+                  ))}
+                </div>
+                <div aria-hidden="true" className="rs-ticker-group">
+                  {breaking.map((item, index) => (
+                    <span className="rs-ticker-item" key={`${index}-${item.text}`}>
+                      <TickerText hidden item={item} />
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
+            <ul className="rs-ticker-static">
+              {breaking.map((item, index) => (
+                <li key={`${index}-${item.text}`}>
+                  <TickerText item={item} />
+                </li>
+              ))}
+            </ul>
+            <Link aria-label="All news" className="rs-ticker-more" href="/news">
+              <ChevronRight aria-hidden="true" size={20} />
+            </Link>
           </div>
-          <ul className="rs-ticker-static">
-            {breakingHeadlines.map((headline) => (
-              <li key={headline}>{headline}</li>
-            ))}
-          </ul>
-          <Link aria-label="All news" className="rs-ticker-more" href="/news">
-            <ChevronRight aria-hidden="true" size={20} />
-          </Link>
         </div>
-      </div>
+      )}
 
       <dialog aria-labelledby="rs-emergency-title" className="rs-dialog" ref={emergencyDialog}>
         <div className="rs-dialog-head">

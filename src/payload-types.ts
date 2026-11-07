@@ -2162,6 +2162,23 @@ export interface Footer {
  */
 export interface SiteSetting {
   id: number;
+  /**
+   * Untick to hide the bar completely. It also stays hidden if there are no items below.
+   */
+  breakingEnabled?: boolean | null;
+  /**
+   * Short headlines shown in the scrolling bar at the top of the site (up to 5).
+   */
+  breakingItems?:
+    | {
+        text: string;
+        /**
+         * A site page such as /news/my-post, or a full address starting with https://
+         */
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   secretariatAddress?: string | null;
   contactEmail?: string | null;
   contactPhone?: string | null;
@@ -2226,6 +2243,14 @@ export interface FooterSelect<T extends boolean = true> {
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
+  breakingEnabled?: T;
+  breakingItems?:
+    | T
+    | {
+        text?: T;
+        link?: T;
+        id?: T;
+      };
   secretariatAddress?: T;
   contactEmail?: T;
   contactPhone?: T;
