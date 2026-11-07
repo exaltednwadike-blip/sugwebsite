@@ -75,6 +75,7 @@ export interface Config {
     'emergency-contacts': EmergencyContact;
     events: Event;
     'exco-members': ExcoMember;
+    appointees: Appointee;
     'exco-contact-messages': ExcoContactMessage;
     memos: Memo;
     'welfare-tickets': WelfareTicket;
@@ -107,6 +108,7 @@ export interface Config {
     'emergency-contacts': EmergencyContactsSelect<false> | EmergencyContactsSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     'exco-members': ExcoMembersSelect<false> | ExcoMembersSelect<true>;
+    appointees: AppointeesSelect<false> | AppointeesSelect<true>;
     'exco-contact-messages': ExcoContactMessagesSelect<false> | ExcoContactMessagesSelect<true>;
     memos: MemosSelect<false> | MemosSelect<true>;
     'welfare-tickets': WelfareTicketsSelect<false> | WelfareTicketsSelect<true>;
@@ -906,6 +908,28 @@ export interface ExcoMember {
   createdAt: string;
 }
 /**
+ * People appointed to serve under the Office of the President. They appear on the Appointees page. To remove someone, delete them.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appointees".
+ */
+export interface Appointee {
+  id: number;
+  fullName: string;
+  /**
+   * The position they hold, for example "Special Adviser on Welfare". You can change this any time.
+   */
+  position: string;
+  phone?: string | null;
+  photo?: (number | null) | Media;
+  /**
+   * Lower numbers come first.
+   */
+  sortOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exco-contact-messages".
  */
@@ -1224,6 +1248,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'exco-members';
         value: number | ExcoMember;
+      } | null)
+    | ({
+        relationTo: 'appointees';
+        value: number | Appointee;
       } | null)
     | ({
         relationTo: 'exco-contact-messages';
@@ -1662,6 +1690,19 @@ export interface ExcoMembersSelect<T extends boolean = true> {
   sortOrder?: T;
   isSpotlight?: T;
   isCurrent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "appointees_select".
+ */
+export interface AppointeesSelect<T extends boolean = true> {
+  fullName?: T;
+  position?: T;
+  phone?: T;
+  photo?: T;
+  sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
 }

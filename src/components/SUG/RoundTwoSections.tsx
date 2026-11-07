@@ -83,13 +83,13 @@ export function RoundTwoSections({
 
       <section aria-labelledby="rs-exec-title" className="rs-section">
         <div className="rs-section-head">
-          <h2 id="rs-exec-title">Meet your executives</h2>
-          <Link className="rs-see-all" href="/officials">
-            View all <ArrowRight aria-hidden="true" size={16} />
-          </Link>
+          <h2 id="rs-exec-title">Meet your leaders</h2>
         </div>
         {executivesArePlaceholder && (
-          <p className="rs-sample-note">Sample executive profiles - update from the SUG admin panel.</p>
+          <p className="rs-sample-note">
+            Sample profiles. They are replaced as soon as the President, Vice President or Speaker is
+            added in the SUG admin panel.
+          </p>
         )}
         {executives.length > 0 ? (
           <div className="rs-exec-grid">
@@ -119,8 +119,14 @@ export function RoundTwoSections({
             ))}
           </div>
         ) : (
-          <p className="rs-empty">Executive profiles will appear here soon.</p>
+          <p className="rs-empty">Leadership profiles will appear here soon.</p>
         )}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
+          <Link className="rs-btn rs-btn-green" href="/officials">
+            Meet all officials
+            <ArrowRight aria-hidden="true" size={17} />
+          </Link>
+        </div>
       </section>
 
       <section aria-labelledby="rs-welfare-title" className="rs-section">

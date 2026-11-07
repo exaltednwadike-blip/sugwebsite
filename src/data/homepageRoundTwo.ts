@@ -58,20 +58,20 @@ export function getPlaceholderEvents(fromDate = new Date()): HomepageEvent[] {
 
 export const placeholderExecutives: HomepageExecutive[] = [
   {
-    fullName: 'Union President',
+    fullName: 'SUG President',
     position: 'President',
     photoUrl: null,
     isPlaceholder: true,
   },
   {
-    fullName: 'Welfare Director',
-    position: 'Welfare Director',
+    fullName: 'SUG Vice President',
+    position: 'Vice President',
     photoUrl: null,
     isPlaceholder: true,
   },
   {
-    fullName: 'Public Relations Officer',
-    position: 'P.R.O.',
+    fullName: 'Speaker of the House',
+    position: 'Speaker',
     photoUrl: null,
     isPlaceholder: true,
   },

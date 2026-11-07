@@ -9,6 +9,7 @@ import { Categories } from './collections/Categories'
 import { EmergencyContacts } from './collections/EmergencyContacts'
 import { Events } from './collections/Events'
 import { ExcoMembers } from './collections/ExcoMembers'
+import { Appointees } from './collections/Appointees'
 import { ExcoContactMessages } from './collections/ExcoContactMessages'
 import { Media } from './collections/Media'
 import { Memos } from './collections/Memos'
@@ -91,7 +92,7 @@ export default buildConfig({
     Resources,
     EmergencyContacts,
     Events,
-    ExcoMembers,
+    ExcoMembers, Appointees,
     ExcoContactMessages,
     Memos,
     WelfareTickets,

@@ -9,7 +9,17 @@ import {
   type HomepageExecutive,
 } from '@/data/homepageRoundTwo'
 import { latestNews, type HomepageNewsItem } from '@/data/homepage'
+import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { getPayload } from 'payload'
+
+export const dynamic = 'force-dynamic'
+
+const TOP_OFFICES = ['president', 'vice_president', 'speaker'] as const
+
+function topRank(office: string | null | undefined): number {
+  const index = TOP_OFFICES.findIndex((o) => o === office)
+  return index === -1 ? 99 : index
+}
 
 export default async function HomePage() {
   const payload = await getPayload({ config: configPromise })
@@ -27,10 +37,11 @@ export default async function HomePage() {
     payload.find({
       collection: 'exco-members',
       depth: 1,
-      limit: 3,
+      limit: 20,
       overrideAccess: false,
-      sort: 'sortOrder',
-      where: { isSpotlight: { equals: true } },
+      where: {
+        and: [{ isCurrent: { equals: true } }, { office: { in: [...TOP_OFFICES] } }],
+      },
     }),
     payload.find({
       collection: 'posts',
@@ -49,12 +60,26 @@ export default async function HomePage() {
     venue: event.venue ?? '',
     eventType: event.eventType ?? 'general',
   }))
-  const executiveItems: HomepageExecutive[] = executiveResult.docs.map((executive) => ({
-    id: executive.id,
-    fullName: executive.fullName,
-    position: executive.position ?? '',
-    photoUrl: typeof executive.photo === 'object' ? (executive.photo?.url ?? null) : null,
-  }))
+
+  const seen = new Set<string>()
+  const executiveItems: HomepageExecutive[] = [...executiveResult.docs]
+    .sort((a, b) => topRank(a.office) - topRank(b.office))
+    .filter((member) => {
+      const key = member.office ?? ''
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
+    .map((executive) => {
+      const photo = typeof executive.photo === 'object' && executive.photo ? executive.photo : null
+      return {
+        id: executive.id,
+        fullName: executive.fullName,
+        position: executive.position ?? '',
+        photoUrl: photo?.url ? getMediaUrl(photo.url, photo.updatedAt) : null,
+      }
+    })
+
   const newsItems: HomepageNewsItem[] = postsResult.docs.map((post) => {
     const category = post.categories?.find((item) => typeof item === 'object')
     return {

@@ -109,6 +109,16 @@ export default async function ExecutiveProfilePage({ params }: ExecutiveProfileP
             )}
           </section>
 
+          {member.office === 'president' && (
+            <section aria-labelledby="appointees-title" className="rs-panel">
+              <h2 id="appointees-title">Presidential appointees</h2>
+              <p>See the people who serve under the Office of the President.</p>
+              <Link className="rs-btn rs-btn-green" href="/appointees">
+                View all appointees &rarr;
+              </Link>
+            </section>
+          )}
+
           <ExecutiveContactForm memberID={member.id} memberName={member.fullName} />
         </article>
       </div>
