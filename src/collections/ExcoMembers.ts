@@ -1,3 +1,4 @@
+import { deleteChildren } from '@/lib/cascade'
 import type { CollectionConfig } from 'payload'
 
 import { ALL_OFFICES, officeLabel } from '../lib/offices'
@@ -22,6 +23,7 @@ export const ExcoMembers: CollectionConfig<'exco-members'> = {
     useAsTitle: 'fullName',
   },
   hooks: {
+    beforeDelete: [deleteChildren('exco-contact-messages', 'member')],
     beforeValidate: [
       ({ data }) => {
         if (!data) {

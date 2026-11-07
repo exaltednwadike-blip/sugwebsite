@@ -1,3 +1,4 @@
+import { deleteChildren } from '@/lib/cascade'
 import { notifyWelfareTicket } from '@/lib/notify'
 import type { CollectionConfig } from 'payload'
 
@@ -21,6 +22,7 @@ export const WelfareTickets: CollectionConfig = {
   },
   hooks: {
     afterChange: [notifyWelfareTicket],
+    beforeDelete: [deleteChildren('welfare-ticket-messages', 'ticket')],
   },
   fields: [
     {

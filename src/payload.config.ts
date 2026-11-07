@@ -3,6 +3,7 @@ import { s3Storage } from '@payloadcms/storage-s3'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
+import { withMenuRules, withMenuRulesGlobals } from './access/adminMenu'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
@@ -84,7 +85,7 @@ export default buildConfig({
     },
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
-  collections: [
+  collections: withMenuRules([
     Pages,
     Posts,
     Media,
@@ -100,9 +101,9 @@ export default buildConfig({
     LostFoundItems,
     LostFoundClaims,
     Users,
-  ],
+  ]),
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, SiteSettings],
+  globals: withMenuRulesGlobals([Header, Footer, SiteSettings]),
   plugins: [
     ...plugins,
     s3Storage({

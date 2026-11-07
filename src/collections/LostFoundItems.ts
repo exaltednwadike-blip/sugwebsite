@@ -1,3 +1,4 @@
+import { deleteChildren } from '@/lib/cascade'
 import { notifyLostFoundItem } from '@/lib/notify'
 import type { CollectionConfig } from 'payload'
 
@@ -21,6 +22,7 @@ export const LostFoundItems: CollectionConfig = {
   },
   hooks: {
     afterChange: [notifyLostFoundItem],
+    beforeDelete: [deleteChildren('lost-found-claims', 'item')],
   },
   fields: [
     {
