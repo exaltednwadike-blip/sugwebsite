@@ -6,7 +6,7 @@ import { ArrowLeft } from 'lucide-react'
 
 import configPromise from '@payload-config'
 import { ExecutiveContactForm } from '@/components/SUG/ExecutiveContactForm'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { getPhotoUrl } from '@/utilities/photoUrl'
 import { getPayload } from 'payload'
 
 type ExecutiveProfileProps = {
@@ -62,14 +62,16 @@ export default async function ExecutiveProfilePage({ params }: ExecutiveProfileP
             {photo?.url ? (
               <Image
                 alt={`${member.fullName}, ${member.position}`}
-                className="rs-profile-photo"
-                height={140}
-                src={getMediaUrl(photo.url, photo.updatedAt)}
+                className="rs-profile-portrait"
+                height={600}
+                priority
+                sizes="240px"
+                src={getPhotoUrl(photo, 'portrait')}
                 unoptimized
-                width={140}
+                width={480}
               />
             ) : (
-              <div aria-hidden="true" className="rs-profile-photo rs-exec-initials">
+              <div aria-hidden="true" className="rs-profile-portrait rs-portrait-initials">
                 {getInitials(member.fullName)}
               </div>
             )}

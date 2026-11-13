@@ -7,7 +7,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { PageBanner } from '@/components/SUG/PageBanner'
 import { isHouseOffice, officeRank } from '@/lib/offices'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { getPhotoUrl } from '@/utilities/photoUrl'
 
 import './officials.css'
 
@@ -54,14 +54,15 @@ function OfficialCard({ member }: { member: Member }) {
       {photo?.url ? (
         <Image
           alt={`${member.fullName}, ${member.position}`}
-          className="rs-exec-photo"
-          height={96}
-          src={getMediaUrl(photo.url, photo.updatedAt)}
+          className="rs-portrait"
+          height={450}
+          sizes="180px"
+          src={getPhotoUrl(photo, 'portrait')}
           unoptimized
-          width={96}
+          width={360}
         />
       ) : (
-        <div aria-hidden="true" className="rs-exec-initials">
+        <div aria-hidden="true" className="rs-portrait rs-portrait-initials">
           {getInitials(member.fullName)}
         </div>
       )}

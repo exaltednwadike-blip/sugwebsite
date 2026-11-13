@@ -35,6 +35,7 @@ const enforceUploadSize: CollectionBeforeOperationHook<'media'> = ({ operation, 
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  admin: { description: 'Crop before saving, using Edit image: officials and appointees 4:5 portrait (at least 800 x 1000), news and event pictures 16:10 (at least 1200 x 750), banners 16:5 (at least 1600 x 500). Then set the focal point on the face so it stays in view.' },
   folders: true,
   access: {
     create: isNewsStaff,
@@ -73,6 +74,9 @@ export const Media: CollectionConfig = {
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [
+      { name: 'portrait', width: 800, height: 1000 },
+      { name: 'card', width: 1200, height: 750 },
+      { name: 'banner', width: 1600, height: 500 },
       {
         name: 'thumbnail',
         width: 300,

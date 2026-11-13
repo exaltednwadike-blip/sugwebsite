@@ -17,6 +17,7 @@ import './globals.css'
 import './restyle.css'
 import './inner.css'
 import './tune.css'
+import './portraits.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const dmSans = DM_Sans({

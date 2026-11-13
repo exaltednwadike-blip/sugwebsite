@@ -9,7 +9,7 @@ import {
   type HomepageExecutive,
 } from '@/data/homepageRoundTwo'
 import { latestNews, type HomepageNewsItem } from '@/data/homepage'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { getPhotoUrl } from '@/utilities/photoUrl'
 import { getPayload } from 'payload'
 
 export const dynamic = 'force-dynamic'
@@ -76,7 +76,7 @@ export default async function HomePage() {
         id: executive.id,
         fullName: executive.fullName,
         position: executive.position ?? '',
-        photoUrl: photo?.url ? getMediaUrl(photo.url, photo.updatedAt) : null,
+        photoUrl: photo?.url ? getPhotoUrl(photo, 'portrait') : null,
       }
     })
 

@@ -295,6 +295,8 @@ export interface Post {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Crop before saving, using Edit image: officials and appointees 4:5 portrait (at least 800 x 1000), news and event pictures 16:10 (at least 1200 x 750), banners 16:5 (at least 1600 x 500). Then set the focal point on the face so it stays in view.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
@@ -330,6 +332,30 @@ export interface Media {
   focalX?: number | null;
   focalY?: number | null;
   sizes?: {
+    portrait?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    banner?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
     thumbnail?: {
       url?: string | null;
       width?: number | null;
@@ -1532,6 +1558,36 @@ export interface MediaSelect<T extends boolean = true> {
   sizes?:
     | T
     | {
+        portrait?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        banner?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
         thumbnail?:
           | T
           | {

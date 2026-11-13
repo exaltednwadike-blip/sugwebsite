@@ -6,7 +6,7 @@ import { ArrowLeft, Phone } from 'lucide-react'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { PageBanner } from '@/components/SUG/PageBanner'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { getPhotoUrl } from '@/utilities/photoUrl'
 
 export const dynamic = 'force-dynamic'
 
@@ -47,14 +47,15 @@ export default async function AppointeesPage() {
                   {photo?.url ? (
                     <Image
                       alt={`${person.fullName}, ${person.position}`}
-                      className="rs-exec-photo"
-                      height={96}
-                      src={getMediaUrl(photo.url, photo.updatedAt)}
+                      className="rs-portrait"
+                      height={450}
+                      sizes="180px"
+                      src={getPhotoUrl(photo, 'portrait')}
                       unoptimized
-                      width={96}
+                      width={360}
                     />
                   ) : (
-                    <div aria-hidden="true" className="rs-exec-initials">
+                    <div aria-hidden="true" className="rs-portrait rs-portrait-initials">
                       {getInitials(person.fullName)}
                     </div>
                   )}

@@ -98,14 +98,15 @@ export function RoundTwoSections({
                 {photoUrl ? (
                   <Image
                     alt={`${fullName}, ${position}`}
-                    className="rs-exec-photo"
-                    height={96}
+                    className="rs-portrait"
+                    height={450}
+                    sizes="180px"
                     src={photoUrl}
                     unoptimized
-                    width={96}
+                    width={360}
                   />
                 ) : (
-                  <div aria-hidden="true" className="rs-exec-initials">
+                  <div aria-hidden="true" className="rs-portrait rs-portrait-initials">
                     {getInitials(fullName)}
                   </div>
                 )}
